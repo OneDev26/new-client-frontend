@@ -1,0 +1,181 @@
+ .task-modal__overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px;
+          z-index: 1000;
+        }
+        
+        .task-modal__container {
+          background-color: white;
+          border-radius: 8px;
+          width: 100%;
+          max-width: 560px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+          overflow: hidden;
+        }
+        
+        .task-modal__header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 24px;
+          border-bottom: 1px solid #eaeaea;
+          background-color: #f9f9f9;
+        }
+        
+        .task-modal__title {
+          font-size: 22px;
+          font-weight: 600;
+          margin: 0;
+          color: #333;
+        }
+        
+        .task-modal__button-group {
+          display: flex;
+          gap: 12px;
+        }
+        
+        .task-modal__expand-button,
+        .task-modal__close-button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 6px;
+          border-radius: 4px;
+          transition: background-color 0.2s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .task-modal__expand-button:hover,
+        .task-modal__close-button:hover {
+          background-color: #f0f0f0;
+        }
+        
+        .task-modal__body {
+          padding: 24px;
+        }
+        
+        .task-form__group {
+          margin-bottom: 24px;
+        }
+        
+        .task-form__label {
+          display: block;
+          font-size: 15px;
+          font-weight: 500;
+          margin-bottom: 8px;
+          color: #444;
+        }
+        
+        .task-form__input,
+        .task-form__select,
+        .task-form__textarea {
+          width: 100%;
+          padding: 12px 16px;
+          border: 1px solid #ddd;
+          border-radius: 20px;
+          font-size: 15px;
+          transition: border-color 0.2s, box-shadow 0.2s;
+          box-sizing: border-box;
+        }
+        
+        .task-form__input:focus,
+        .task-form__select:focus,
+        .task-form__textarea:focus {
+          outline: none;
+          border-color: #d72e59;
+          box-shadow: 0 0 0 3px rgba(176, 141, 68, 0.2);
+        }
+        
+        .task-form__input::placeholder,
+        .task-form__select::placeholder,
+        .task-form__textarea::placeholder {
+          color: #aaa;
+        }
+        
+        .task-form__textarea {
+          height: 180px;
+          resize: vertical;
+          line-height: 1.5;
+        }
+        
+        .task-modal__footer {
+          display: flex;
+          justify-content: flex-end;
+          padding: 20px 24px;
+          gap: 16px;
+          border-top: 1px solid #eaeaea;
+          background-color: #f9f9f9;
+        }
+        
+        .task-modal__submit-button,
+        .task-modal__cancel-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 12px 24px;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 15px;
+          font-weight: 500;
+          transition: background-color 0.2s, transform 0.1s;
+          min-width: 120px;
+        }
+        
+        .task-modal__submit-button:hover,
+        .task-modal__cancel-button:hover {
+          transform: translateY(-1px);
+        }
+        
+        .task-modal__submit-button:active,
+        .task-modal__cancel-button:active {
+          transform: translateY(1px);
+        }
+        
+        .task-modal__submit-button {
+          background-color: #d72e59;
+          color: white;
+        }
+        
+        .task-modal__submit-button:hover {
+          background-color: rgb(180, 41, 75);
+        }
+        
+        .task-modal__cancel-button {
+          background-color: #333;
+          color: white;
+        }
+        
+        .task-modal__cancel-button:hover {
+          background-color: #222;
+        }
+        
+        .task-modal__button-icon {
+          margin-right: 10px;
+        }
+
+        /* Add responsive styles */
+        @media (max-width: 600px) {
+          .task-modal__overlay {
+            padding: 16px;
+          }
+          
+          .task-modal__footer {
+            flex-direction: column;
+          }
+          
+          .task-modal__submit-button,
+          .task-modal__cancel-button {
+            width: 100%;
+          }
+        }

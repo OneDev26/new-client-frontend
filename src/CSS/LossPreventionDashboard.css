@@ -1,0 +1,196 @@
+/* Define root variables for consistent theming */
+:root {
+    --lp-primary-text: #1f2937;
+    --lp-secondary-text: #6b7280;
+    --lp-background: #ffffff;
+    --lp-success: #10b981;
+    --lp-danger: #ef4444;
+    --lp-hover-bg: #f3f4f6;
+    --lp-button-bg: #f9fafb;
+    --lp-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Main container styles - establishes the card-like appearance */
+.loss-prevention {
+    width: 24rem;
+    padding: 1.5rem;
+    background-color: var(--lp-background);
+    border-radius: 0.75rem;
+    box-shadow: var(--lp-shadow);
+}
+
+/* Header section - contains title and chevron icon */
+.loss-prevention__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.loss-prevention__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--lp-primary-text);
+}
+
+.loss-prevention__chevron {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--lp-secondary-text);
+}
+
+/* Donut chart container and SVG styling */
+.loss-prevention__chart {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.loss-prevention__donut {
+  
+    margin: 0 auto;
+    transform: rotate(-90deg);
+}
+
+.loss-prevention__donut-segment {
+    transition: all 0.3s ease;
+}
+
+/* Center text within the donut chart */
+.loss-prevention__total {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.loss-prevention__total-label {
+    font-size: 0.875rem;
+    color: var(--lp-secondary-text);
+}
+
+.loss-prevention__total-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--lp-primary-text);
+}
+
+/* Segments list styling */
+.loss-prevention__segments {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.loss-prevention__segment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Left side of segment row with indicator and label */
+.loss-prevention__segment-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.loss-prevention__indicator {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.25rem;
+}
+
+.loss-prevention__label {
+    color: var(--lp-secondary-text);
+}
+
+/* Right side of segment row with count and change indicator */
+.loss-prevention__metrics {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.loss-prevention__count {
+    font-weight: 600;
+    color: var(--lp-primary-text);
+}
+
+.loss-prevention__change {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Modifiers for positive/negative changes */
+.loss-prevention__change--positive {
+    color: var(--lp-success);
+}
+
+.loss-prevention__change--negative {
+    color: var(--lp-danger);
+}
+
+.loss-prevention__arrow {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Details button styling */
+.loss-prevention__details-button {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    text-align: center;
+    color: var(--lp-secondary-text);
+    background-color: var(--lp-button-bg);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.loss-prevention__details-button:hover {
+    background-color: var(--lp-hover-bg);
+}
+
+/* Responsive design adjustments */
+@media (max-width: 640px) {
+    .loss-prevention {
+        width: 95%;
+        padding: 1rem;
+        box-sizing: border-box;
+        margin-top: 10px;
+    }
+    
+    .loss-prevention__donut {
+        width: 10rem;
+        height: 10rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+    }
+
+    .loss-prevention__segments {
+        gap: 0.75rem;
+    }
+    .loss-prevention__chart{
+        height: 20vh;
+    }
+}
+
+/* Accessibility enhancements */
+.loss-prevention__details-button:focus {
+    outline: 2px solid var(--lp-primary-text);
+    outline-offset: 2px;
+}
+
+/* Animation for hover states */
+.loss-prevention__segment:hover {
+    background-color: var(--lp-button-bg);
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease;
+}

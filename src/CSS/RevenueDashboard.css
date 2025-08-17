@@ -1,0 +1,484 @@
+.revenue-dashboard {
+    padding: 24px;
+  }
+  
+  .revenue-dashboard__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .revenue-dashboard__title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .revenue-dashboard__title {
+    color: #bebebe;
+    font-size: 54px;
+    font-weight: 400;
+    margin: 0;
+  }
+  
+  .revenue-dashboard__avatars {
+    display: flex;
+    margin-left: 8px;
+  }
+  
+  .revenue-dashboard__avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-left: -8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .revenue-dashboard__avatar--blue { background-color: #3b82f6; }
+  .revenue-dashboard__avatar--green { background-color: #22c55e; }
+  .revenue-dashboard__avatar--purple { background-color: #a855f7; }
+  .revenue-dashboard__avatar--add {
+    background-color: #f3f4f6;
+    cursor: pointer;
+  }
+  
+  .revenue-dashboard__statistics-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .revenue-dashboard__date-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .revenue-dashboard__date-selector {
+    padding: 7px 10px;
+    background-color: #f3f0f0;
+    border-radius: 15px;
+  }
+  
+  .revenue-dashboard__revenue-card {
+    margin-bottom: 24px;
+  }
+  
+  .revenue-dashboard__revenue-card-label {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .revenue-dashboard__revenue-card-amount-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .revenue-dashboard__revenue-card-amount {
+    font-size: 5rem;
+    font-weight: 400;
+    color: #111;
+  }
+  
+  .revenue-dashboard__revenue-card-change {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background-color: #f43f5e;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+  }
+  
+  .revenue-dashboard__revenue-card-comparison {
+    color: #666;
+    font-size: 12px;
+  }
+  
+  .revenue-dashboard__metrics-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 70%;
+  }
+  
+  .revenue-dashboard__metric-card {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .revenue-dashboard__metric-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .revenue-dashboard__metric-card-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .revenue-dashboard__metric-card-icon {
+    width: 32px;
+    height: 32px;
+    background: #f3f4f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #111;
+  }
+  
+  .revenue-dashboard__metric-card-label {
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .revenue-dashboard__metric-card-change {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #666;
+    font-size: 12px;
+  }
+  
+  .revenue-dashboard__metric-card-arrow {
+    color: #999;
+  }
+  
+  /* Container for all cards */
+  .revenue-dashboard__cards-container {
+    display: flex;
+    gap: 24px;
+    padding: 32px;
+    background-color: #f5f5f5;
+  }
+  
+  /* Base card styles */
+  .revenue-dashboard__stat-card {
+    position: relative;
+    width: 24%;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  .revenue-dashboard__card-content {
+    padding: 15px;
+  }
+  
+  /* Light theme */
+  .revenue-dashboard__stat-card--light {
+    background: white;
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.08),
+      0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Dark theme */
+  .revenue-dashboard__stat-card--dark {
+    background: black;
+    color: white;
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.2),
+      0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Card header */
+  .revenue-dashboard__card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  
+  .revenue-dashboard__card-title {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+  
+  .revenue-dashboard__stat-card--light .revenue-dashboard__card-title {
+    color: #666;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .revenue-dashboard__stat-card--dark .revenue-dashboard__card-title {
+    color: #999;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  
+  .revenue-dashboard__star-icon {
+    color: #666;
+  }
+  
+  /* Value display */
+  .revenue-dashboard__card-value {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 12px 0 12px;
+  }
+  
+  .revenue-dashboard__stat-card--dark .revenue-dashboard__card-value {
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Card footer */
+  .revenue-dashboard__card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .revenue-dashboard__user {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .revenue-dashboard__user .revenue-dashboard__avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: none;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+  }
+  
+  .revenue-dashboard__user-name {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  /* Arrow button */
+  .revenue-dashboard__arrow-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .revenue-dashboard__stat-card--light .revenue-dashboard__arrow-button {
+    background: #f5f5f5;
+    color: #666;
+  }
+  
+  .revenue-dashboard__stat-card--dark .revenue-dashboard__arrow-button {
+    background: white;
+    color: black;
+  }
+  
+  .revenue-dashboard__arrow-button:hover {
+    opacity: 0.9;
+  }
+  
+  .revenue-dashboard__store-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0 0 0;
+  }
+  
+  .revenue-dashboard__stat-card--dark .revenue-dashboard__avatar {
+    background-color: transparent;
+    color: white;
+  }
+  
+  .revenue-dashboard__store-list {
+    display: flex;
+    border-radius: 9999px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: rgb(237, 237, 237);
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    padding: 5px;
+    gap: 5px;
+    font-size: 14px;
+  }
+  
+  .revenue-dashboard__store-item {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    justify-content: space-between;
+    padding: 5px 12px;
+    background-color: white;
+    border-radius: 9999px;
+  }
+  
+  .revenue-dashboard__store-item-name {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .revenue-dashboard__store-image {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .revenue-dashboard__store-name {
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+  
+  .revenue-dashboard__store-city {
+    color: #666;
+  }
+  
+  .revenue-dashboard__details-button {
+    background: #000;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+  
+  .revenue-dashboard__details-button:hover {
+    background: #333;
+  }
+  
+  .revenue-dashboard__store-head-strip {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 5px;
+    margin: 10px 0 30px;
+  }
+  
+  .revenue-dashboard__store-head-strip .revenue-dashboard__store-item {
+    border: 0.5px solid rgb(230, 230, 230);
+  }
+  
+  .revenue-dashboard__plus-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 0.5px solid rgb(230, 230, 230);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .revenue-dashboard__plus-icon-container:hover {
+    background-color: #F3F4F6;
+  }
+
+  .revenue-dashboard__plus-icon-head {
+    width: 24px;
+    height: 24px;
+    color: #616161;
+  }
+
+  .revenue-dashboard__error-message {
+    color: #f43f5e;
+    background-color: #fef2f2;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #fecaca;
+  }
+
+  /* Responsive design adjustments */
+  @media (max-width: 748px) {
+    .revenue-dashboard {
+      padding: 24px 10px;
+      box-sizing: border-box;
+    }
+    
+    .revenue-dashboard__header {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .revenue-dashboard__title {
+      font-size: 48px;
+    }
+    
+    .revenue-dashboard__title-wrapper {
+      align-items: end;
+      justify-content: space-between;
+      width: 100%;
+    }
+    
+    .revenue-dashboard__date-display {
+      width: 100%;
+      justify-content: end;
+    }
+    
+    .revenue-dashboard__avatars {
+      margin-bottom: 8px;
+    }
+    
+    .revenue-dashboard__avatar {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .revenue-dashboard__store-head-strip {
+      overflow-x: auto;
+    }
+    
+    .revenue-dashboard__plus-icon-container,
+    .revenue-dashboard__store-head-strip .revenue-dashboard__store-item {
+      flex-shrink: 0;
+    }
+    
+    .revenue-dashboard__statistics-box {
+      width: 100%;
+      flex-direction: column;
+    }
+    
+    .revenue-dashboard__revenue-card {
+      width: 90%;
+    }
+    
+    .revenue-dashboard__metrics-grid {
+      width: 100%;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .revenue-dashboard__stat-card {
+      width: 90%;
+    }
+    
+    .revenue-dashboard__store-list {
+      width: 65%;
+      overflow-x: auto;
+    }
+    
+    .revenue-dashboard__store-item {
+      flex-shrink: 0;
+    }
+  }

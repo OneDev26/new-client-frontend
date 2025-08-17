@@ -1,0 +1,592 @@
+.sta-wrapper {
+    width: 100%;
+  }
+  .sta-container {
+  
+    padding: 25px;
+    margin: 0 auto;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sta-container:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+  /* Table container + scrolling */
+  .sta-table-container {
+    overflow-x: auto;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    background: linear-gradient(to bottom, #ffffff, #fafafa);
+  }
+  /* Webkit Scrollbar Styles */
+  .sta-table-container::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  .sta-table-container::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 8px;
+  }
+  .sta-table-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  .sta-table-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+  .sta-table-container::-webkit-scrollbar-button {
+    display: none;
+  }
+  /* Firefox Scrollbar */
+  .sta-table-container {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+  }
+  /* IE */
+  .sta-table-container {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+  /* Header */
+  .sta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid #f1f5f9;
+    position: relative;
+  }
+  .sta-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, #f59e0b, #f97316);
+  }
+  .sta-header-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .sta-header-title h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(135deg, #1e293b, #334155);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.03em;
+  }
+  .sta-warning-icon {
+    color: #f59e0b;
+    filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.25));
+    animation: sta-pulse 2s infinite;
+  }
+  @keyframes sta-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+  }
+  .sta-external-link {
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 8px;
+    border-radius: 8px;
+  }
+  .sta-external-link:hover {
+    color: #334155;
+    transform: scale(1.1) rotate(15deg);
+    background: #f8fafc;
+  }
+  /* Table styles */
+  .sta-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    font-size: 15px;
+  }
+  .sta-table th {
+    background: #f8fafc;
+    padding: 20px 24px;
+    font-weight: 600;
+    color: #334155;
+    border-bottom: 2px solid #e2e8f0;
+    position: relative;
+    white-space: nowrap;
+  }
+  .sta-table th:first-child {
+    border-top-left-radius: 16px;
+  }
+  .sta-table th:last-child {
+    border-top-right-radius: 16px;
+  }
+  .sta-table td {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #475569;
+    transition: all 0.2s ease;
+  }
+  .sta-table tr:last-child td {
+    border-bottom: none;
+  }
+  .sta-table tr:last-child td:first-child {
+    border-bottom-left-radius: 16px;
+  }
+  .sta-table tr:last-child td:last-child {
+    border-bottom-right-radius: 16px;
+  }
+  .sta-table tr {
+    transition: all 0.3s ease;
+  }
+  .sta-table tr:hover {
+    background: linear-gradient(to right, #f8fafc, #f1f5f9);
+    transform: scale(1.01);
+  }
+  .sta-error-text {
+    color: #dc2626;
+    font-weight: 600;
+    text-shadow: 0 0 1px rgba(220, 38, 38, 0.1);
+  }
+  .sta-store-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    max-width: 200px;
+  }
+  .sta-store-image {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+  }
+  .sta-store-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .sta-store-name {
+    font-weight: 600;
+    color: #334155;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sta-store-location {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sta-device-tag {
+    background: linear-gradient(135deg, #059669, #10b981);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    display: inline-block;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+    transition: all 0.3s ease;
+    min-width: 120px;
+    text-align: center;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .sta-device-tag:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+  .sta-no-video {
+    color: #94a3b8;
+    font-style: italic;
+    position: relative;
+    padding-left: 20px;
+  }
+  .sta-no-video::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #cbd5e1;
+  }
+  .sta-video-thumbnail {
+    position: relative;
+    width: 100px;
+    height: 70px;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+  .sta-video-thumbnail:hover {
+    transform: scale(1.08);
+    border-color: #60a5fa;
+    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.1);
+  }
+  .sta-video-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+  }
+  .sta-video-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+    transition: all 0.3s ease;
+  }
+  .sta-video-overlay:hover {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+  }
+  .sta-video-overlay svg {
+    color: white;
+    width: 32px;
+    height: 32px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+  }
+  .sta-video-overlay:hover svg {
+    transform: scale(1.15);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  }
+  /* Mobile Card Container */
+  .sta-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .sta-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #f1f5f9;
+  }
+  .sta-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  }
+  .sta-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    background: linear-gradient(to right, #f8fafc, #f1f5f9);
+  }
+  .sta-card-content {
+    padding: 16px;
+  }
+  .sta-card-row {
+    display: flex;
+    padding: 8px 0;
+    border-bottom: 1px dashed #f1f5f9;
+  }
+  .sta-card-row:last-child {
+    border-bottom: none;
+  }
+  .sta-card-label {
+    font-weight: 600;
+    color: #64748b;
+    width: 40%;
+    font-size: 14px;
+  }
+  .sta-card-value {
+    width: 60%;
+    color: #334155;
+    font-size: 14px;
+  }
+  /* Simple search box example */
+  .incident-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f1f5f9;
+    padding: 6px 12px;
+    border-radius: 8px;
+  }
+  .incident-search__input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    width: 160px;
+  }
+  .incident-search__icon {
+    color: #9ca3af;
+  }
+  /* Media queries to toggle display:
+     - Show the table (desktop-view) on screens >= 769px
+     - Show the cards (mobile-view) on screens <= 768px
+  */
+  .desktop-view {
+    display: none;
+  }
+  .mobile-view {
+    display: none;
+  }
+  @media (min-width: 769px) {
+    .desktop-view {
+      display: block;
+    }
+  }
+  @media (max-width: 768px) {
+    .mobile-view {
+      display: block;
+    }
+  }
+  /* Video Modal Styles */
+  .video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .video-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+  }
+  .video-modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    cursor: pointer;
+    color: white;
+  }
+  /* Verification Status Styles */
+  .sta-verified-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    margin: 0 auto;
+  }
+  .sta-verified {
+    background: linear-gradient(135deg, #059669, #10b981);
+    color: white;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+  }
+  .sta-not-verified {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    color: white;
+    box-shadow: 0 2px 6px rgba(220, 38, 38, 0.2);
+  }
+  /* Loading indicator styles */
+  .sta-loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+  }
+  .sta-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #f59e0b;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+  }
+  .sta-loading-indicator p {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .sta-loader-ref {
+    min-height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Skeleton Loading Styles */
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+  
+  .sta-skeleton-pulse {
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+    background-size: 200% 100%;
+    animation: pulse 1.5s ease-in-out infinite;
+    border-radius: 4px;
+  }
+  
+  .sta-skeleton-image {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+    background-size: 200% 100%;
+    animation: pulse 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  
+  .sta-skeleton-text-short {
+    width: 70%;
+    height: 16px;
+    background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+    background-size: 200% 100%;
+    animation: pulse 1.5s ease-in-out infinite;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+  
+  .sta-skeleton-text-xshort {
+    width: 40%;
+    height: 12px;
+    background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+    background-size: 200% 100%;
+    animation: pulse 1.5s ease-in-out infinite;
+    border-radius: 4px;
+  }
+  
+  .sta-skeleton-text-medium {
+    width: 90%;
+    height: 18px;
+    background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+    background-size: 200% 100%;
+    animation: pulse 1.5s ease-in-out infinite;
+    border-radius: 4px;
+  }
+  
+  .sta-skeleton-tag {
+    width: 120px;
+    height: 36px;
+    border-radius: 100px;
+    background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+    background-size: 200% 100%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  
+  .sta-skeleton-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin: 0 auto;
+    background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+    background-size: 200% 100%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  
+  .sta-skeleton-thumbnail {
+    width: 100px;
+    height: 70px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+    background-size: 200% 100%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  
+  /* We can safely remove these unused skeleton styles for the header */
+  /*
+  .sta-header-skeleton-title {
+    width: 240px;
+    height: 28px;
+    background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+    background-size: 200% 100%;
+    animation: pulse 1.5s ease-in-out infinite;
+    border-radius: 6px;
+  }
+  
+  .sta-header-skeleton-search {
+    width: 180px;
+    height: 36px;
+    background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+    background-size: 200% 100%;
+    animation: pulse 1.5s ease-in-out infinite;
+    border-radius: 8px;
+  }
+  */
+  
+  /* For skeleton table/cards that have hover animations, disable them during loading */
+  .sta-table tr.skeleton-row:hover {
+    background: transparent;
+    transform: none;
+  }
+  
+  .sta-card.skeleton-card:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    
+  }
+    .sta-banner-header {
+      position: relative;
+      height: 200px;
+background:url(https://portal.survill.com/banner/transaction.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 60%;    
+      overflow: hidden;
+    }
+
+    .sta-banner-header__pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.3;
+      color:black;
+      background-size: 20px 20px;
+    }
+
+    .sta-banner-header__content {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .sta-banner-header__title {
+      color: white;
+      font-size: 3rem;
+      font-weight: 400;
+    }
+       @media (max-width: 768px) {
+   .sta-banner-header {
+  height:150px;
+}
+  .sta-banner-header__title {
+    font-size: 2rem;
+    
+}
+  }
