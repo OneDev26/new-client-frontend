@@ -8,7 +8,7 @@ export const setLogoutHandler = (handler) => {
 };
 
 const axiosInstance = axios.create({
-  baseURL: 'https://server.survill.com',
+  baseURL: 'http://127.0.0.1:8000',
 });
 
 axiosInstance.interceptors.request.use((config) => {
