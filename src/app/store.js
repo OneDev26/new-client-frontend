@@ -5,6 +5,7 @@ import reportReducer from '../features/reports/reportSlice';
 import queryReducer from '../features/queries/querySlice';
 import queryResponseReducer from '../features/queryResponses/queryResponseSlice'; // ne
 import transactionReducer from '../features/transactions/transactionSlice'; 
+import notificationReducer from '../features/notifications/notificationSlice'; // NEW
 
 
 export const store = configureStore({
@@ -15,6 +16,8 @@ export const store = configureStore({
     queries: queryReducer,
     queryResponses: queryResponseReducer, // add it here
     transactions: transactionReducer,
+    notifications: notificationReducer, // NEW
+
 
   },
 });

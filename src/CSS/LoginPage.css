@@ -1,200 +1,239 @@
 .login-container {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    box-sizing: border-box;
-  }
-  
-  .login-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 60%;
-  }
-  
-  .login-right {
-    padding: 4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 40%;
-  }
-  .login-right form{
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-  }
-  
-  .login-title {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 1.5rem;
-    width: 100%;
-    text-align: center;
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
 
-  }
-  
-  .form-group {
-    margin-top: 1.5rem;
-    position: relative;
-    width: 73%;
-  }
-  
-  .input-field {
-    width: 100%;
-    padding: 16px 20px;
-    background-color: #f3f3f3;
-    border: none;
-    border-radius: 25px;
-    font-size: 14px;
-    outline: none;
-    box-sizing: border-box;
-  }
-  
-  .input-field::placeholder {
-    color: #8e8d8d;
-    font-size: 14px;
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
 
-  }
-  
-  .password-toggle {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #666;
-  }
-  
-  .remember-forgot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0;
-    width: 73%;
-  }
-  
-  .checkbox-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .remember-checkbox {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #ddd;
-    border-radius: 50%;
-    cursor: pointer;
-    position: relative;
-  }
-  
-  .remember-checkbox:checked {
-    background-color: #ff4e00;
-    border-color: #ff4e00;
-  }
-  
-  .remember-checkbox:checked::after {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: white;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  .remember-text {
-    color: black;
-    font-size: 14px;
-    font-weight: 600;
-    margin: 10px 0 10px;
-  }
-  
-  .forgot-link {
-    color: #666;
-    text-decoration: underline;
-    font-size: 14px;
-  }
-  
-  .forgot-link:hover {
-    text-decoration: underline;
-  }
-  
-  .submit-button {
-    width: 73%;
-    padding: 16px;
-    background: #ff4e00;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    margin: 1.5rem 0;
-  }
-  
-  .submit-button:hover {
-    background: #ff3737;
-  }
-  
-  .signup-text {
-    text-align: center;
-    color: #666;
-    font-size: 14px;
-  }
-  
-  .signup-link {
-    color: #ff4e00;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .signup-link:hover {
-    text-decoration: underline;
-  }
-  
-  .login-left img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    height: 100%;
-    object-position: 50% 35%;
-  }
- /* Responsive Design */
-@media (max-width: 768px) {
-  .login-left {
-  
-    width: 100%;
-    height: 100%;
-  }
-  
-  .login-right {
-    padding: 1.2rem;
-    
-    width: 85%;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background: #fff4;
-    border-radius: 30px;
-    backdrop-filter: blur(50px);
-  }
-.form-group,.remember-forgot, .submit-button{
+.background-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.login-form-container {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.glass-form {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  padding: 3rem;
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-title {
+  font-size: 2.5rem;
+  margin-top:0;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 2rem;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.glass-form form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
 }
-.login-title{
+
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 100%;
+}
+
+.input-field {
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255);
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+
+
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+  color: #fff;
+}
+
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0 20px 0;
+  width: 100%;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remember-checkbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.remember-checkbox:checked {
+  background: #ff4e00;
+  border-color: #ff4e00;
+}
+
+.remember-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
   color: white;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-.remember-text,.forgot-link,.signup-text{
+
+.remember-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.forgot-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.forgot-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 16px;
+  background: #8e2d24;
   color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 1rem 0;
+  transition: all 0.3s ease;
 }
+
+.submit-button:hover {
+  background: #90281e;
+ 
 }
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-text {
+  color: #ff6b6b;
+  font-size: 14px;
+  text-align: center;
+  margin: 10px 0;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.signup-text {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  margin-top: 1rem;
+}
+
+.signup-link {
+  color: #ff4e00;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.signup-link:hover {
+  color: #ff6b35;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-form-container {
+    padding: 1rem;
+  }
+  
+  .glass-form {
+    padding: 2rem 1.3rem;
+    max-width: 100%;
+  }
+  
+ 
+}
+

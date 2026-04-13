@@ -10,9 +10,6 @@ import '../CSS/LoginPage.css';
 const LoginPage = () => {
   const token = useSelector((state) => state.auth.token);
 
-  // If the user is not authenticated, redirect to the login page
-
-
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,6 +17,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
+  
   if (token) {
     return <Navigate to="/" replace />;
   }
@@ -36,65 +34,62 @@ const LoginPage = () => {
 
   return (
     <div className="login-container">
-      <div className="login-left">
-        <img src="/banner/login.png" alt="Login illustration" />
+      <div className="background-image">
+        <img src="/banner/login.png" alt="Login background" />
       </div>
-
-      <div className="login-right">
-        <h1 className="login-title">Sign in to Survill</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input-field"
-              placeholder="Email"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
-              placeholder="Password"
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="password-toggle"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-
-          <div className="remember-forgot">
-            <div className="checkbox-wrapper">
-              <input type="checkbox" id="remember" className="remember-checkbox" />
-              <span className="remember-text">Remember me</span>
+      
+      <div className="login-form-container">
+        <div className="glass-form">
+          <h1 className="login-title">Sign In</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input-field"
+                placeholder="Email"
+                required
+              />
             </div>
-            <a href="#" className="forgot-link">
-              Forgot Password?
-            </a>
-          </div>
 
-          <button type="submit" className="submit-button" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign in'}
-          </button>
+            <div className="form-group">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input-field"
+                placeholder="Password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="password-toggle"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
 
-          {error && <p className="error-text">{error}</p>}
+            <div className="remember-forgot">
+              <div className="checkbox-wrapper">
+                <input type="checkbox" id="remember" className="remember-checkbox" />
+                <span className="remember-text">Remember me</span>
+              </div>
+              <a href="#" className="forgot-link">
+                Forgot Password?
+              </a>
+            </div>
 
-          <p className="signup-text">
-            Don't have an account?{' '}
-            <a href="#" className="signup-link">
-              Sign Up now
-            </a>
-          </p>
-        </form>
+            <button type="submit" className="submit-button" disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign in'}
+            </button>
+
+            {error && <p className="error-text">{error}</p>}
+
+           
+          </form>
+        </div>
       </div>
     </div>
   );

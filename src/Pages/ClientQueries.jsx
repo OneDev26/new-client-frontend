@@ -626,24 +626,26 @@ const ClientQueries = () => {
             )}
 
             {/* Error State */}
-            {error && !loading && (
-              <div className="error-state-container" style={{ padding: '32px', textAlign: 'center', color: '#e53e3e' }}>
-                <p>Error: {error}</p>
-                <button 
-                  className="clear-filters-btn"
-                  onClick={() => {
-                    handleClearFilters();
-                    dispatch(fetchQueriesThunk({
-                      offset: 0,
-                      limit: pagination.limit
-                    }));
-                  }}
-                  style={{ marginTop: '16px' }}
-                >
-                  Try Again
-                </button>
-              </div>
-            )}
+              {error && !loading && (
+  <div className="error-state-container" style={{ padding: '32px', textAlign: 'center', color: '#e53e3e' }}>
+    <p>
+      Error: {error.detail || error.message || (typeof error === 'string' ? error : 'An error occurred')}
+    </p>
+    <button 
+      className="clear-filters-btn"
+      onClick={() => {
+        handleClearFilters();
+        dispatch(fetchQueriesThunk({
+          offset: 0,
+          limit: pagination.limit
+        }));
+      }}
+      style={{ marginTop: '16px' }}
+    >
+      Try Again
+    </button>
+  </div>
+)}
 
             {/* Empty State */}
             {!loading && !error && results && results.length === 0 ? (

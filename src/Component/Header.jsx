@@ -1,15 +1,26 @@
+// src/components/Header.jsx
 import React, { useEffect, useState } from 'react';
-import { Search, Menu, Bell, ChevronDown } from 'lucide-react';
+import { Search, Menu, ChevronDown } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchStoresThunk } from '../features/stores/storeThunks'; 
 import { fetchReportsThunk } from '../features/reports/reportThunks'; 
 import { fetchTransactionsThunk } from '../features/transactions/transactionThunks';
 import { useNavigate } from 'react-router-dom';
+import NotificationsDropdown from './NotificationsDropdown';
+import useNotifications, { requestNotificationPermission } from '../hooks/useNotifications';
 
 // Define the Header component
 function Header({ onMenuClick }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Initialize WebSocket connection
+  useNotifications();
+
+  // Request notification permission on mount
+  useEffect(() => {
+    requestNotificationPermission();
+  }, []);
 
   // Get stores and auth state from Redux
   const { stores, loading, error } = useSelector((state) => state.stores);
@@ -17,9 +28,7 @@ function Header({ onMenuClick }) {
 
   // Local state
   const [isStoreDropdownOpen, setStoreDropdownOpen] = useState(false);
-  const [isNotificationDropdownOpen, setNotificationDropdownOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState({ id: null, store_name: 'All Stores' });
-  const [notificationCount, setNotificationCount] = useState(0); // Example notification count
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -31,9 +40,6 @@ function Header({ onMenuClick }) {
 
   // Toggle store dropdown
   const toggleStoreDropdown = () => setStoreDropdownOpen(!isStoreDropdownOpen);
-
-  // Toggle notification dropdown
-  const toggleNotificationDropdown = () => setNotificationDropdownOpen(!isNotificationDropdownOpen);
 
   // Navigate to profile page
   const navigateToProfile = () => {
@@ -286,20 +292,8 @@ function Header({ onMenuClick }) {
             )}
           </div>
 
-          {/* Notification Bell */}
-          <div className="notification-container">
-            <button className="icon-button notification-button" onClick={toggleNotificationDropdown}>
-              <Bell className="menu-icon" />
-              {notificationCount > 0 && (
-                <span className="notification-badge">{notificationCount}</span>
-              )}
-            </button>
-            {isNotificationDropdownOpen && (
-              <div className="notification-dropdown">
-                <div className="notification-item">No new notifications</div>
-              </div>
-            )}
-          </div>
+          {/* Notification Bell - NEW: Using NotificationsDropdown component */}
+          <NotificationsDropdown />
         </div>
       </header>
 
@@ -502,16 +496,17 @@ function Header({ onMenuClick }) {
           display: flex;
           align-items: center;
           justify-content: center;
+          border: 2px solid white;
         }
         .avatar-container {
           width: 32px;
           height: 32px;
-          cursor: pointer; /* Make it clear it's clickable */
+          cursor: pointer;
           transition: transform 0.2s ease;
         }
         .avatar-container:hover {
-          transform: scale(1.05); /* Slight enlargement on hover */
-          box-shadow: 0 0 0 2px rgba(216, 45, 87, 0.2); /* Red glow on hover */
+          transform: scale(1.05);
+          box-shadow: 0 0 0 2px rgba(216, 45, 87, 0.2);
           border-radius: 50%;
         }
         .avatar {
@@ -519,24 +514,6 @@ function Header({ onMenuClick }) {
           height: 100%;
           border-radius: 50%;
           object-fit: cover;
-        }
-        .notification-container {
-          position: relative;
-        }
-        .notification-dropdown {
-          position: absolute;
-          top: 110%;
-          right: 0;
-          background: white;
-          border: 1px solid #e5e7eb;
-          border-radius: 6px;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-          width: 200px;
-          padding: 8px;
-          z-index: 10;
-        }
-        .notification-item {
-          padding: 8px 12px;
         }
         .mobile-search-bar {
           display: none;
@@ -591,5 +568,4 @@ function Header({ onMenuClick }) {
   );
 }
 
-// Make sure we export the component correctly
 export default Header;

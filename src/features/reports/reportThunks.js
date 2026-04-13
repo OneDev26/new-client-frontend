@@ -3,32 +3,78 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '../../api/axiosInstance';  
 
 /* ──────────────────────────────────────────────────────────
-   Paginated "fetch all"  ‑‑ supports store‑filter + limit/offset
+   Paginated "fetch all" - FIXED to support all filter parameters
    ────────────────────────────────────────────────────────── */ 
 export const fetchReportsThunk = createAsyncThunk(
   'reports/fetchAll',
-  /** args may be either a storeId (legacy) or an options object */
   async (args, { rejectWithValue }) => {
     try {
-      /* Back‑compat: allow passing plain storeId */
-      let storeId = null, offset = 0, limit = 20;
+      console.log('fetchReportsThunk called with args:', args);
+      
+      // Handle both legacy (plain storeId) and new (object with filters) formats
+      let params = {};
+      
       if (typeof args === 'object' && args !== null) {
-        ({ storeId = null, offset = 0, limit = 20 } = args);
+        // New format - extract all parameters
+        const {
+          storeId,
+          store_id,
+          offset = 0,
+          limit = 20,
+          append = false,
+          ...otherFilters // This captures all other filter parameters
+        } = args;
+        
+        // Set basic pagination
+        params.limit = limit;
+        params.offset = offset;
+        
+        // Handle store filtering (support both storeId and store_id)
+        if (storeId || store_id) {
+          params.store_id = storeId || store_id;
+        }
+        
+        // Add all other filter parameters
+        Object.keys(otherFilters).forEach(key => {
+          if (otherFilters[key] !== null && otherFilters[key] !== undefined && otherFilters[key] !== '') {
+            params[key] = otherFilters[key];
+          }
+        });
+        
       } else if (args !== undefined) {
-        storeId = args;
+        // Legacy format - just a storeId
+        params.store_id = args;
+        params.limit = 20;
+        params.offset = 0;
+      } else {
+        // No args - default pagination
+        params.limit = 20;
+        params.offset = 0;
       }
       
-      const params = [];
-      if (storeId) params.push(`store=${storeId}`);
-      params.push(`limit=${limit}`);
-      params.push(`offset=${offset}`);
+      // Convert params object to query string
+      const queryParams = new URLSearchParams();
+      Object.keys(params).forEach(key => {
+        if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+          queryParams.append(key, params[key]);
+        }
+      });
       
-      const url = `/api/reports/?${params.join('&')}`;
+      const url = `/api/reports/?${queryParams.toString()}`;
+      console.log('Making API request to:', url);
+      
       const res = await axiosInstance.get(url);
+      console.log('API response:', res.data);
       
-      return { ...res.data, append: offset > 0 };
+      return { 
+        ...res.data, 
+        append: (args?.append || args?.offset > 0) 
+      };
+      
     } catch (err) {
-      return rejectWithValue('Failed to fetch reports');
+      console.error('fetchReportsThunk error:', err);
+      const errorMessage = err.response?.data?.detail || err.message || 'Failed to fetch reports';
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -36,9 +82,21 @@ export const fetchReportsThunk = createAsyncThunk(
 /* ---- everything below here is unchanged (summary, by‑year, …) ---- */
 export const fetchReportSummaryThunk = createAsyncThunk(
   'reports/fetchSummary',
-  async (_, { rejectWithValue }) => {
+  async (filters = {}, { rejectWithValue }) => {
     try {
-      const res = await axiosInstance.get('/api/reports/summary/');
+      // Support filters for summary as well
+      const queryParams = new URLSearchParams();
+      Object.keys(filters).forEach(key => {
+        if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
+          queryParams.append(key, filters[key]);
+        }
+      });
+      
+      const url = queryParams.toString() 
+        ? `/api/reports/summary/?${queryParams.toString()}`
+        : '/api/reports/summary/';
+      
+      const res = await axiosInstance.get(url);
       return res.data;
     } catch (err) {
       return rejectWithValue('Failed to fetch report summary');
@@ -48,9 +106,23 @@ export const fetchReportSummaryThunk = createAsyncThunk(
 
 export const fetchReportsByYearThunk = createAsyncThunk(
   'reports/fetchByYear',
-  async (year, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const res = await axiosInstance.get(`/api/reports/by-year/?year=${year}`);
+      // Handle both old format (just year) and new format (object with filters)
+      let queryParams;
+      if (typeof params === 'object') {
+        queryParams = new URLSearchParams();
+        Object.keys(params).forEach(key => {
+          if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+            queryParams.append(key, params[key]);
+          }
+        });
+      } else {
+        // Legacy: just year
+        queryParams = new URLSearchParams({ year: params });
+      }
+      
+      const res = await axiosInstance.get(`/api/reports/by-year/?${queryParams.toString()}`);
       return res.data;
     } catch (err) {
       return rejectWithValue('Failed to fetch reports by year');
@@ -60,11 +132,16 @@ export const fetchReportsByYearThunk = createAsyncThunk(
 
 export const fetchReportsByMonthThunk = createAsyncThunk(
   'reports/fetchByMonth',
-  async ({ year, month }, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const res = await axiosInstance.get(
-        `/api/reports/by-month/?year=${year}&month=${month}`
-      );
+      const queryParams = new URLSearchParams();
+      Object.keys(params).forEach(key => {
+        if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+          queryParams.append(key, params[key]);
+        }
+      });
+      
+      const res = await axiosInstance.get(`/api/reports/by-month/?${queryParams.toString()}`);
       return res.data;
     } catch (err) {
       return rejectWithValue('Failed to fetch reports by month');
@@ -74,11 +151,16 @@ export const fetchReportsByMonthThunk = createAsyncThunk(
 
 export const fetchReportsByWeekThunk = createAsyncThunk(
   'reports/fetchByWeek',
-  async ({ year, month, week }, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const res = await axiosInstance.get(
-        `/api/reports/by-week/?year=${year}&month=${month}&week=${week}`
-      );
+      const queryParams = new URLSearchParams();
+      Object.keys(params).forEach(key => {
+        if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+          queryParams.append(key, params[key]);
+        }
+      });
+      
+      const res = await axiosInstance.get(`/api/reports/by-week/?${queryParams.toString()}`);
       return res.data;
     } catch (err) {
       return rejectWithValue('Failed to fetch reports by week');
@@ -88,11 +170,16 @@ export const fetchReportsByWeekThunk = createAsyncThunk(
 
 export const fetchReportsByDateRangeThunk = createAsyncThunk(
   'reports/fetchByDateRange',
-  async ({ start_date, end_date }, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const res = await axiosInstance.get(
-        `/api/reports/by-date-range/?start_date=${start_date}&end_date=${end_date}`
-      );
+      const queryParams = new URLSearchParams();
+      Object.keys(params).forEach(key => {
+        if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+          queryParams.append(key, params[key]);
+        }
+      });
+      
+      const res = await axiosInstance.get(`/api/reports/by-date-range/?${queryParams.toString()}`);
       return res.data;
     } catch (err) {
       return rejectWithValue('Failed to fetch reports by date range');
@@ -105,11 +192,19 @@ export const fetchReportsByDateRangeThunk = createAsyncThunk(
 // Fetch store owner summary (total reports and breakdown by incident type)
 export const fetchStoreOwnerSummaryThunk = createAsyncThunk(
   'reports/fetchStoreOwnerSummary',
-  async (storeId = null, { rejectWithValue }) => {
+  async (params = {}, { rejectWithValue }) => {
     try {
-      const url = storeId 
-        ? `/api/reports/store-owner-summary/?store_id=${storeId}` 
+      const queryParams = new URLSearchParams();
+      Object.keys(params).forEach(key => {
+        if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+          queryParams.append(key, params[key]);
+        }
+      });
+      
+      const url = queryParams.toString()
+        ? `/api/reports/store-owner-summary/?${queryParams.toString()}`
         : '/api/reports/store-owner-summary/';
+      
       const res = await axiosInstance.get(url);
       return res.data;
     } catch (err) {
@@ -121,11 +216,19 @@ export const fetchStoreOwnerSummaryThunk = createAsyncThunk(
 // Fetch daily incidents for the past three months
 export const fetchDailyIncidentsThreeMonthsThunk = createAsyncThunk(
   'reports/fetchDailyIncidentsThreeMonths',
-  async (storeId = null, { rejectWithValue }) => {
+  async (params = {}, { rejectWithValue }) => {
     try {
-      const url = storeId 
-        ? `/api/reports/daily-incidents-three-months/?store_id=${storeId}` 
+      const queryParams = new URLSearchParams();
+      Object.keys(params).forEach(key => {
+        if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+          queryParams.append(key, params[key]);
+        }
+      });
+      
+      const url = queryParams.toString()
+        ? `/api/reports/daily-incidents-three-months/?${queryParams.toString()}`
         : '/api/reports/daily-incidents-three-months/';
+      
       const res = await axiosInstance.get(url);
       return res.data;
     } catch (err) {
@@ -137,11 +240,19 @@ export const fetchDailyIncidentsThreeMonthsThunk = createAsyncThunk(
 // Fetch monthly severity breakdown for the past three months
 export const fetchMonthlySeverityBreakdownThunk = createAsyncThunk(
   'reports/fetchMonthlySeverityBreakdown',
-  async (storeId = null, { rejectWithValue }) => {
+  async (params = {}, { rejectWithValue }) => {
     try {
-      const url = storeId 
-        ? `/api/reports/monthly-severity-breakdown/?store_id=${storeId}` 
+      const queryParams = new URLSearchParams();
+      Object.keys(params).forEach(key => {
+        if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+          queryParams.append(key, params[key]);
+        }
+      });
+      
+      const url = queryParams.toString()
+        ? `/api/reports/monthly-severity-breakdown/?${queryParams.toString()}`
         : '/api/reports/monthly-severity-breakdown/';
+      
       const res = await axiosInstance.get(url);
       return res.data;
     } catch (err) {

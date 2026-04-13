@@ -1,482 +1,973 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Camera, MapPin, Video, Filter, Calendar as CalendarIcon } from 'lucide-react';
-import '../CSS/ReportsInterface.css';
-import Sidebar from '../Component/Sidebar';
-import Header from '../Component/Header';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Camera, MapPin, Video, Filter, Search, RefreshCw, Download, Eye, X, Play, Pause, Volume2, VolumeX, ChevronLeft, ChevronRight, FileX, ChevronDown, ChevronUp } from 'lucide-react';
+
+// Import thunks from your reportThunks file
 import {
   fetchReportsThunk,
+  fetchReportSummaryThunk,
   fetchReportsByYearThunk,
   fetchReportsByMonthThunk,
   fetchReportsByWeekThunk,
-  fetchReportsByDateRangeThunk,
-  fetchStoreOwnerSummaryThunk,
-  fetchDailyIncidentsThreeMonthsThunk,
-  fetchMonthlySeverityBreakdownThunk,
-} from '../features/reports/reportThunks';
+  fetchReportsByDateRangeThunk
+} from '../features/reports/reportThunks'; // Adjust import path as needed
+
+import '../CSS/ReportsInterface.css';
 
 const ReportsInterface = () => {
   const dispatch = useDispatch();
   
   // Redux state
-  const {
-    results: reports,
-    loading,
-    error,
-    reportsByYear,
-    yearLoading,
-    reportsByMonth,
-    monthLoading,
-    reportsByWeek,
-    weekLoading,
-    reportsByDateRange,
-    dateRangeLoading,
-    storeOwnerSummary,
-    storeOwnerSummaryLoading,
-    dailyIncidentsThreeMonths,
-    dailyIncidentsThreeMonthsLoading,
-  } = useSelector((state) => state.reports);
+  const { 
+    results: reports = [], 
+    loading = false, 
+    error = null, 
+    count: totalCount = 0, 
+    next = null 
+  } = useSelector(state => state.reports || {});
 
-  // Component state
-  const [activeTab, setActiveTab] = useState('YEARLY');
-  const [filteredCategory, setFilteredCategory] = useState(null);
-  const [selectedYear, setSelectedYear] = useState('2025');
-  const [selectedMonth, setSelectedMonth] = useState('1');
-  const [selectedWeek, setSelectedWeek] = useState('1');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [storeId, setStoreId] = useState(null); // For store filtering
+  // Filter state
+  const [filters, setFilters] = useState({
+    filterType: 'all',
+    year: new Date().getFullYear(),
+    month: new Date().getMonth() + 1,
+    week: 1,
+    startDate: '',
+    endDate: '',
+    status: 'all',
+    severity: 'all',
+    storeId: '',
+    employeeId: '',
+    search: '',
+    incidentType: 'all'
+  });
 
-  // Available years for selection
-  const availableYears = ['2023', '2024', '2025'];
-  const availableMonths = [
-    { value: '1', label: 'January' },
-    { value: '2', label: 'February' },
-    { value: '3', label: 'March' },
-    { value: '4', label: 'April' },
-    { value: '5', label: 'May' },
-    { value: '6', label: 'June' },
-    { value: '7', label: 'July' },
-    { value: '8', label: 'August' },
-    { value: '9', label: 'September' },
-    { value: '10', label: 'October' },
-    { value: '11', label: 'November' },
-    { value: '12', label: 'December' },
-  ];
+  // Pagination and UI state
+  const [currentOffset, setCurrentOffset] = useState(0);
+  const [hasAppliedFilters, setHasAppliedFilters] = useState(false);
+  const [selectedMedia, setSelectedMedia] = useState(null);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [videoStates, setVideoStates] = useState({});
+  const [expandedCards, setExpandedCards] = useState({});
+  
+  const LIMIT = 20;
 
-  // Load data based on active tab
+  // Toggle card expansion
+  const toggleCardExpansion = (reportId) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [reportId]: !prev[reportId]
+    }));
+  };
+
+  // Media viewer functions
+  const openMediaViewer = (mediaFiles, index = 0) => {
+    setSelectedMedia(mediaFiles);
+    setCurrentMediaIndex(index);
+  };
+
+  const closeMediaViewer = () => {
+    setSelectedMedia(null);
+    setCurrentMediaIndex(0);
+    // Pause any playing videos
+    Object.keys(videoStates).forEach(key => {
+      if (videoStates[key].isPlaying) {
+        const video = document.getElementById(key);
+        if (video) video.pause();
+      }
+    });
+  };
+
+  const navigateMedia = (direction) => {
+    if (!selectedMedia) return;
+    
+    const newIndex = direction === 'next' 
+      ? Math.min(currentMediaIndex + 1, selectedMedia.length - 1)
+      : Math.max(currentMediaIndex - 1, 0);
+    
+    setCurrentMediaIndex(newIndex);
+  };
+
+  // Video player functions
+  const toggleVideoPlay = (videoId) => {
+    const video = document.getElementById(videoId);
+    if (!video) return;
+
+    const currentState = videoStates[videoId] || { isPlaying: false, isMuted: false, progress: 0, duration: 0 };
+    
+    if (currentState.isPlaying) {
+      video.pause();
+      setVideoStates(prev => ({
+        ...prev,
+        [videoId]: { ...currentState, isPlaying: false }
+      }));
+    } else {
+      video.play();
+      setVideoStates(prev => ({
+        ...prev,
+        [videoId]: { ...currentState, isPlaying: true }
+      }));
+    }
+  };
+
+  const toggleVideoMute = (videoId) => {
+    const video = document.getElementById(videoId);
+    if (!video) return;
+
+    const currentState = videoStates[videoId] || { isPlaying: false, isMuted: false, progress: 0, duration: 0 };
+    video.muted = !currentState.isMuted;
+    
+    setVideoStates(prev => ({
+      ...prev,
+      [videoId]: { ...currentState, isMuted: !currentState.isMuted }
+    }));
+  };
+
+  const handleVideoProgress = (videoId, e) => {
+    const video = e.target;
+    const progress = (video.currentTime / video.duration) * 100;
+    
+    setVideoStates(prev => ({
+      ...prev,
+      [videoId]: {
+        ...prev[videoId],
+        progress: progress || 0,
+        duration: video.duration || 0,
+        currentTime: video.currentTime || 0
+      }
+    }));
+  };
+
+  const seekVideo = (videoId, e) => {
+    const video = document.getElementById(videoId);
+    const progressBar = e.currentTarget;
+    const rect = progressBar.getBoundingClientRect();
+    const progress = (e.clientX - rect.left) / rect.width;
+    
+    if (video && video.duration) {
+      video.currentTime = progress * video.duration;
+    }
+  };
+
+  const formatTime = (seconds) => {
+    if (!seconds || !isFinite(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Helper functions
+  const getCurrentDate = () => new Date().toISOString().split('T')[0];
+
+  const getDateRangeFromFilters = useCallback(() => {
+    let startDate = '';
+    let endDate = '';
+
+    switch (filters.filterType) {
+      case 'daily':
+        if (filters.startDate) {
+          startDate = filters.startDate;
+          endDate = filters.startDate;
+        } else {
+          const todayStr = getCurrentDate();
+          startDate = todayStr;
+          endDate = todayStr;
+        }
+        break;
+        
+      case 'weekly':
+        const yearStart = new Date(filters.year, 0, 1);
+        const weekStart = new Date(yearStart);
+        weekStart.setDate(yearStart.getDate() + (filters.week - 1) * 7);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+        
+        startDate = weekStart.toISOString().split('T')[0];
+        endDate = weekEnd.toISOString().split('T')[0];
+        break;
+        
+      case 'monthly':
+        const monthStart = new Date(filters.year, filters.month - 1, 1);
+        const monthEnd = new Date(filters.year, filters.month, 0);
+        startDate = monthStart.toISOString().split('T')[0];
+        endDate = monthEnd.toISOString().split('T')[0];
+        break;
+        
+      case 'yearly':
+        startDate = `${filters.year}-01-01`;
+        endDate = `${filters.year}-12-31`;
+        break;
+        
+      case 'dateRange':
+        startDate = filters.startDate;
+        endDate = filters.endDate;
+        break;
+    }
+
+    return { startDate, endDate };
+  }, [filters]);
+
+  const buildQueryParams = useCallback((offset = 0) => {
+    const { startDate, endDate } = getDateRangeFromFilters();
+    
+    const params = {
+      limit: LIMIT,
+      offset: offset
+    };
+
+    if (startDate) params.start_date = startDate;
+    if (endDate) params.end_date = endDate;
+    if (filters.status !== 'all') params.status = filters.status;
+    if (filters.severity !== 'all') params.severity = filters.severity;
+    if (filters.storeId) params.store_id = filters.storeId;
+    if (filters.employeeId) params.employee_id = filters.employeeId;
+    if (filters.search.trim()) params.search = filters.search.trim();
+    if (filters.incidentType !== 'all') params.incident_type = filters.incidentType;
+
+    return params;
+  }, [filters, getDateRangeFromFilters]);
+
+  const fetchReports = useCallback((offset = 0, append = false) => {
+    console.log('Fetching reports with filters:', filters);
+    const params = buildQueryParams(offset);
+    console.log('API params:', params);
+    
+    // Create proper action payload
+    const actionPayload = {
+      ...params,
+      append: append
+    };
+    
+    dispatch(fetchReportsThunk(actionPayload));
+  }, [dispatch, buildQueryParams, filters]);
+
+  // Event handlers
+  const handleApplyFilters = () => {
+    console.log('Applying filters:', filters);
+    setCurrentOffset(0);
+    setHasAppliedFilters(true);
+    fetchReports(0, false);
+  };
+
+  const handleLoadMore = () => {
+    const newOffset = currentOffset + LIMIT;
+    setCurrentOffset(newOffset);
+    fetchReports(newOffset, true);
+  };
+
+  const handleClearFilters = () => {
+    const defaultFilters = {
+      filterType: 'all',
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1,
+      week: 1,
+      startDate: '',
+      endDate: '',
+      status: 'all',
+      severity: 'all',
+      storeId: '',
+      employeeId: '',
+      search: '',
+      incidentType: 'all'
+    };
+    
+    setFilters(defaultFilters);
+    setCurrentOffset(0);
+    setHasAppliedFilters(false);
+    
+    dispatch(fetchReportsThunk({ limit: LIMIT, offset: 0 }));
+  };
+
+  const handleFilterChange = (key, value) => {
+    console.log(`Filter change: ${key} = ${value}`);
+    setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleExport = () => {
+    const params = buildQueryParams();
+    console.log('Exporting reports with parameters:', params);
+    alert('Export functionality would be implemented here');
+  };
+
+  const formatStatus = (status) => {
+    const statusMap = {
+      'APPROVED': 'Approved',
+      'SUBMITTED_REVIEW': 'Under Review',
+      'SUBMITTED_APPROVAL': 'Pending Approval',
+      'DECLINED': 'Declined',
+      'DISCREPANCY': 'Discrepancy'
+    };
+    return statusMap[status] || status;
+  };
+
+  const getStatusClass = (status) => {
+    return `ri-reports-interface__status ri-reports-interface__status-${status?.toLowerCase()}`;
+  };
+
+  const getSeverityClass = (severity) => {
+    return `ri-reports-interface__severity-badge ri-reports-interface__severity--${severity?.toLowerCase()}`;
+  };
+
+  const isVideoFile = (filename) => {
+    if (!filename) return false;
+    const videoExtensions = ['mp4', 'webm', 'ogg', 'avi', 'mov', 'wmv', 'flv', 'm4v'];
+    const extension = filename.split('.').pop()?.toLowerCase();
+    return videoExtensions.includes(extension);
+  };
+
+  const isImageFile = (filename) => {
+    if (!filename) return false;
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
+    const extension = filename.split('.').pop()?.toLowerCase();
+    return imageExtensions.includes(extension);
+  };
+
+  // Render media thumbnails
+  const renderMediaThumbnails = (mediaFiles) => {
+    if (!mediaFiles || mediaFiles.length === 0) {
+      return (
+        <div className="ri-reports-interface__no-media">
+          <FileX size={16} />
+          No media
+        </div>
+      );
+    }
+
+    return (
+      <div className="ri-reports-interface__media-section">
+        <div className="ri-reports-interface__media-thumbnails">
+          {mediaFiles.slice(0, 3).map((media, index) => (
+            <div
+              key={index}
+              className="ri-reports-interface__media-thumbnail"
+              onClick={() => openMediaViewer(mediaFiles, index)}
+              style={{
+                backgroundImage: isImageFile(media.file) ? `url(${media.file})` : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+            >
+              {isVideoFile(media.file) && <Play size={20} color="#757575" />}
+            </div>
+          ))}
+          {mediaFiles.length > 3 && (
+            <div
+              className="ri-reports-interface__media-thumbnail"
+              onClick={() => openMediaViewer(mediaFiles, 3)}
+              style={{
+                fontSize: '0.875rem',
+                fontWeight: '600',
+                color: '#757575',
+                backgroundColor: '#f3f4f6'
+              }}
+            >
+              +{mediaFiles.length - 3}
+            </div>
+          )}
+        </div>
+        <div className="ri-reports-interface__media-count">
+          {mediaFiles.length} file{mediaFiles.length !== 1 ? 's' : ''}
+        </div>
+      </div>
+    );
+  };
+
+  // Render mobile card
+  const renderMobileCard = (report) => {
+    const isExpanded = expandedCards[report.id];
+
+    return (
+      <div key={report.id} className="ri-reports-interface__mobile-card">
+        <div 
+          className="ri-reports-interface__mobile-card-header"
+          onClick={() => toggleCardExpansion(report.id)}
+        >
+          <div className="ri-reports-interface__mobile-card-main-info">
+            <div className="ri-reports-interface__store">
+              <img
+                src={report.store?.image || '/default/store.png'}
+                alt={report.store?.store_name || 'Store'}
+                className="ri-reports-interface__store-image"
+                onError={(e) => {
+                  e.target.src = '/default/store.png';
+                }}
+              />
+              <div className="ri-reports-interface__store-details">
+                <div className="ri-reports-interface__store-name">
+                  {report.store?.store_name || 'Unknown Store'}
+                </div>
+                <div className="ri-reports-interface__store-location">
+                  {report.store?.store_city || 'Unknown Location'}
+                </div>
+              </div>
+            </div>
+            <div style={{ marginTop: '0.75rem' }}>
+              <span className={getStatusClass(report.status)}>
+                {formatStatus(report.status)}
+              </span>
+            </div>
+          </div>
+          <button className="ri-reports-interface__mobile-card-expand-btn">
+            {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </button>
+        </div>
+
+        <div className={`ri-reports-interface__mobile-card-content ${isExpanded ? 'ri-reports-interface__mobile-card-content--expanded' : ''}`}>
+          <div className="ri-reports-interface__mobile-card-body">
+            <div className="ri-reports-interface__mobile-card-row">
+              <div className="ri-reports-interface__mobile-card-label">Date & Time</div>
+              <div className="ri-reports-interface__mobile-card-value">
+                {new Date(report.incident_date).toLocaleDateString()} at {report.incident_time || 'Unknown time'}
+              </div>
+            </div>
+
+            <div className="ri-reports-interface__mobile-card-row">
+              <div className="ri-reports-interface__mobile-card-label">Description</div>
+              <div className="ri-reports-interface__mobile-card-value">
+                {report.details || 'No description available'}
+              </div>
+            </div>
+
+            <div className="ri-reports-interface__mobile-card-row">
+              <div className="ri-reports-interface__mobile-card-label">Severity</div>
+              <div className="ri-reports-interface__mobile-card-value">
+                <span className={getSeverityClass(report.severity || 'low')}>
+                  {(report.severity || 'low').toUpperCase()}
+                </span>
+              </div>
+            </div>
+
+            <div className="ri-reports-interface__mobile-card-row">
+              <div className="ri-reports-interface__mobile-card-label">Media Files</div>
+              <div className="ri-reports-interface__mobile-card-value">
+                {renderMediaThumbnails(report.media_files)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Initial load
   useEffect(() => {
-    const loadData = async () => {
-      switch (activeTab) {
-        case 'YEARLY':
-          dispatch(fetchReportsByYearThunk(selectedYear));
+    if (!hasAppliedFilters && reports.length === 0) {
+      console.log('Initial load');
+      dispatch(fetchReportsThunk({ limit: LIMIT, offset: 0 }));
+    }
+  }, [dispatch, hasAppliedFilters, reports.length]);
+
+  // Keyboard navigation for media viewer
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!selectedMedia) return;
+      
+      switch (e.key) {
+        case 'Escape':
+          closeMediaViewer();
           break;
-        case 'MONTHLY':
-          dispatch(fetchReportsByMonthThunk({ 
-            year: selectedYear, 
-            month: selectedMonth 
-          }));
+        case 'ArrowLeft':
+          navigateMedia('prev');
           break;
-        case 'WEEKLY':
-          dispatch(fetchReportsByWeekThunk({ 
-            year: selectedYear, 
-            month: selectedMonth, 
-            week: selectedWeek 
-          }));
-          break;
-        case 'DAILY':
-          dispatch(fetchDailyIncidentsThreeMonthsThunk(storeId));
-          break;
-        case 'DATE_RANGE':
-          if (startDate && endDate) {
-            dispatch(fetchReportsByDateRangeThunk({ 
-              start_date: startDate, 
-              end_date: endDate 
-            }));
-          }
-          break;
-        default:
+        case 'ArrowRight':
+          navigateMedia('next');
           break;
       }
     };
 
-    loadData();
-  }, [dispatch, activeTab, selectedYear, selectedMonth, selectedWeek, startDate, endDate, storeId]);
-
-  // Load store owner summary on component mount
-  useEffect(() => {
-    dispatch(fetchStoreOwnerSummaryThunk(storeId));
-  }, [dispatch, storeId]);
-
-  // Load reports list
-  useEffect(() => {
-    dispatch(fetchReportsThunk({ storeId, offset: 0, limit: 50 }));
-  }, [dispatch, storeId]);
-
-  // Get current data based on active tab
-  const getCurrentData = () => {
-    switch (activeTab) {
-      case 'YEARLY':
-        return reportsByYear;
-      case 'MONTHLY':
-        return reportsByMonth;
-      case 'WEEKLY':
-        return reportsByWeek;
-      case 'DAILY':
-        return dailyIncidentsThreeMonths;
-      case 'DATE_RANGE':
-        return reportsByDateRange;
-      default:
-        return null;
+    if (selectedMedia) {
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
     }
-  };
+  }, [selectedMedia, currentMediaIndex]);
 
-  const getCurrentLoading = () => {
-    switch (activeTab) {
-      case 'YEARLY':
-        return yearLoading;
-      case 'MONTHLY':
-        return monthLoading;
-      case 'WEEKLY':
-        return weekLoading;
-      case 'DAILY':
-        return dailyIncidentsThreeMonthsLoading;
-      case 'DATE_RANGE':
-        return dateRangeLoading;
-      default:
-        return false;
-    }
-  };
+  console.log('Component render - Reports:', reports.length, 'Loading:', loading, 'Error:', error);
 
-  // Handler for Metric Click
-  const handleMetricClick = (category) => {
-    setFilteredCategory(filteredCategory === category ? null : category);
-  };
-
-  // Handler to Clear Filters
-  const clearFilters = () => {
-    setFilteredCategory(null);
-  };
-
-  // Handler for Calendar Date Change
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  // Filter reports based on category
-  const getFilteredReports = () => {
-    if (!reports) return [];
-    
-    let filtered = [...reports];
-    
-    if (filteredCategory) {
-      filtered = filtered.filter(report => 
-        report.incident_type?.toLowerCase() === filteredCategory.toLowerCase() ||
-        report.status?.toLowerCase() === filteredCategory.toLowerCase()
-      );
-    }
-    
-    return filtered;
-  };
-
-  // Helper function to get severity class
-  const getSeverityClass = (severity) => {
-    switch (severity?.toLowerCase()) {
-      case 'low':
-        return 'reports-interface__severity--low';
-      case 'medium':
-        return 'reports-interface__severity--medium';
-      case 'high':
-        return 'reports-interface__severity--high';
-      case 'critical':
-        return 'reports-interface__severity--critical';
-      default:
-        return '';
-    }
-  };
-
-  // Get statistics for display
-  const getStatistics = () => {
-    const currentData = getCurrentData();
-    if (!currentData) return null;
-
-    // Handle different data structures from API
-    if (Array.isArray(currentData)) {
-      // For daily incidents or other array responses
-      const stats = currentData.reduce((acc, item) => {
-        const type = item.incident_type || 'general';
-        acc[type] = (acc[type] || 0) + (item.count || 1);
-        return acc;
-      }, {});
-      return stats;
-    } else if (currentData.breakdown) {
-      // For responses with breakdown property
-      return currentData.breakdown;
-    } else {
-      // Direct object with statistics
-      return currentData;
-    }
-  };
-
-  const statistics = getStatistics();
-  const filteredReports = getFilteredReports();
-  const isLoading = getCurrentLoading();
+  const showEmptyState = !loading && reports.length === 0;
 
   return (
-    <div className="reports-interface">
-      <div className="reports-interface__container">
-        <main className="reports-interface__main">
-          <div className="reports-interface__content">
-            {/* Header Section */}
-            <div className="reports-interface__header">
-              <h1 className="reports-interface__title">Reports Dashboard</h1>
-              {storeOwnerSummary && (
-                <div className="reports-interface__summary">
-                  <span className="reports-interface__summary-text">
-                    Total Reports: {storeOwnerSummary.total_reports || 0}
-                  </span>
+    <div className="ri-reports-interface">
+      <div className="ri-reports-interface__main">
+        <div className="ri-reports-interface__content">
+          {/* Header */}
+          <div className="ri-reports-interface__header">
+            <h1 className="ri-reports-interface__title">All Reports</h1>
+            <div className="ri-reports-interface__summary">
+              <span className="ri-reports-interface__summary-text">
+                <Eye size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                {totalCount || 0} total reports
+              </span>
+            </div>
+          </div>
+
+          {/* Filters Section */}
+          <div className="ri-reports-interface__filters">
+            <div className="ri-reports-interface__filters-header">
+              <div className="ri-reports-interface__filters-title">
+                <Filter size={20} />
+                Advanced Filters
+              </div>
+              <button className="ri-reports-interface__clear-filters-btn" onClick={handleClearFilters}>
+                <RefreshCw size={16} />
+                Clear All
+              </button>
+            </div>
+
+            <div className="ri-reports-interface__filters-grid">
+              {/* Time Filter Type */}
+              <div className="ri-reports-interface__filter-group">
+                <label className="ri-reports-interface__filter-label">Time Period</label>
+                <select
+                  className="ri-reports-interface__filter-select"
+                  value={filters.filterType}
+                  onChange={(e) => handleFilterChange('filterType', e.target.value)}
+                >
+                  <option value="all">All Time</option>
+                  <option value="daily">Single Day</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="yearly">Yearly</option>
+                  <option value="dateRange">Custom Date Range</option>
+                </select>
+              </div>
+
+              {/* Conditional time inputs */}
+              {filters.filterType === 'daily' && (
+                <div className="ri-reports-interface__filter-group">
+                  <label className="ri-reports-interface__filter-label">Select Date</label>
+                  <input
+                    type="date"
+                    className="ri-reports-interface__filter-input"
+                    value={filters.startDate}
+                    onChange={(e) => handleFilterChange('startDate', e.target.value)}
+                  />
                 </div>
               )}
-            </div>
 
-            {/* Navigation Tabs */}
-            <div className="reports-interface__tabs">
-              {['YEARLY', 'MONTHLY', 'WEEKLY', 'DAILY', 'DATE_RANGE'].map((tab) => (
-                <button
-                  key={tab}
-                  className={`reports-interface__tab ${activeTab === tab ? 'reports-interface__tab--active' : ''}`}
-                  onClick={() => {
-                    setActiveTab(tab);
-                    setFilteredCategory(null);
-                  }}
-                >
-                  {tab.replace('_', ' ')}
-                </button>
-              ))}
-            </div>
+              {filters.filterType === 'weekly' && (
+                <>
+                  <div className="ri-reports-interface__filter-group">
+                    <label className="ri-reports-interface__filter-label">Week Number</label>
+                    <select
+                      className="ri-reports-interface__filter-select"
+                      value={filters.week}
+                      onChange={(e) => handleFilterChange('week', parseInt(e.target.value))}
+                    >
+                      {Array.from({ length: 52 }, (_, i) => i + 1).map(week => (
+                        <option key={week} value={week}>Week {week}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="ri-reports-interface__filter-group">
+                    <label className="ri-reports-interface__filter-label">Year</label>
+                    <select
+                      className="ri-reports-interface__filter-select"
+                      value={filters.year}
+                      onChange={(e) => handleFilterChange('year', parseInt(e.target.value))}
+                    >
+                      {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                        <option key={year} value={year}>{year}</option>
+                      ))}
+                    </select>
+                  </div>
+                </>
+              )}
 
-            {/* Filter Controls */}
-            <div className="reports-interface__filters">
-              {(activeTab === 'YEARLY' || activeTab === 'MONTHLY' || activeTab === 'WEEKLY') && (
-                <div className="reports-interface__filter-group">
-                  <label className="reports-interface__filter-label">Year:</label>
+              {filters.filterType === 'monthly' && (
+                <>
+                  <div className="ri-reports-interface__filter-group">
+                    <label className="ri-reports-interface__filter-label">Month</label>
+                    <select
+                      className="ri-reports-interface__filter-select"
+                      value={filters.month}
+                      onChange={(e) => handleFilterChange('month', parseInt(e.target.value))}
+                    >
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                        <option key={month} value={month}>
+                          {new Date(2000, month - 1).toLocaleString('default', { month: 'long' })}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="ri-reports-interface__filter-group">
+                    <label className="ri-reports-interface__filter-label">Year</label>
+                    <select
+                      className="ri-reports-interface__filter-select"
+                      value={filters.year}
+                      onChange={(e) => handleFilterChange('year', parseInt(e.target.value))}
+                    >
+                      {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                        <option key={year} value={year}>{year}</option>
+                      ))}
+                    </select>
+                  </div>
+                </>
+              )}
+
+              {filters.filterType === 'yearly' && (
+                <div className="ri-reports-interface__filter-group">
+                  <label className="ri-reports-interface__filter-label">Year</label>
                   <select
-                    className="reports-interface__filter-select"
-                    value={selectedYear}
-                    onChange={(e) => setSelectedYear(e.target.value)}
+                    className="ri-reports-interface__filter-select"
+                    value={filters.year}
+                    onChange={(e) => handleFilterChange('year', parseInt(e.target.value))}
                   >
-                    {availableYears.map((year) => (
+                    {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map(year => (
                       <option key={year} value={year}>{year}</option>
                     ))}
                   </select>
                 </div>
               )}
 
-              {(activeTab === 'MONTHLY' || activeTab === 'WEEKLY') && (
-                <div className="reports-interface__filter-group">
-                  <label className="reports-interface__filter-label">Month:</label>
-                  <select
-                    className="reports-interface__filter-select"
-                    value={selectedMonth}
-                    onChange={(e) => setSelectedMonth(e.target.value)}
-                  >
-                    {availableMonths.map((month) => (
-                      <option key={month.value} value={month.value}>{month.label}</option>
-                    ))}
-                  </select>
+              {filters.filterType === 'dateRange' && (
+                <div className="ri-reports-interface__filter-group">
+                  <label className="ri-reports-interface__filter-label">Date Range</label>
+                  <div className="ri-reports-interface__date-range-group">
+                    <input
+                      type="date"
+                      className="ri-reports-interface__filter-input"
+                      placeholder="Start Date"
+                      value={filters.startDate}
+                      onChange={(e) => handleFilterChange('startDate', e.target.value)}
+                    />
+                    <input
+                      type="date"
+                      className="ri-reports-interface__filter-input"
+                      placeholder="End Date"
+                      value={filters.endDate}
+                      onChange={(e) => handleFilterChange('endDate', e.target.value)}
+                    />
+                  </div>
                 </div>
               )}
 
-              {activeTab === 'WEEKLY' && (
-                <div className="reports-interface__filter-group">
-                  <label className="reports-interface__filter-label">Week:</label>
-                  <select
-                    className="reports-interface__filter-select"
-                    value={selectedWeek}
-                    onChange={(e) => setSelectedWeek(e.target.value)}
-                  >
-                    {[1, 2, 3, 4, 5].map((week) => (
-                      <option key={week} value={week}>Week {week}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {activeTab === 'DATE_RANGE' && (
-                <>
-                  <div className="reports-interface__filter-group">
-                    <label className="reports-interface__filter-label">Start Date:</label>
-                    <input
-                      type="date"
-                      className="reports-interface__filter-input"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                    />
-                  </div>
-                  <div className="reports-interface__filter-group">
-                    <label className="reports-interface__filter-label">End Date:</label>
-                    <input
-                      type="date"
-                      className="reports-interface__filter-input"
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                    />
-                  </div>
-                </>
-              )}
-
-              {activeTab === 'DAILY' && (
-                <div className="reports-interface__filter-group">
-                  <CalendarIcon className="reports-interface__calendar-icon" />
-                  <Calendar 
-                    onChange={handleDateChange} 
-                    value={selectedDate} 
-                    className="reports-interface__calendar"
+              {/* Search */}
+              <div className="ri-reports-interface__filter-group">
+                <label className="ri-reports-interface__filter-label">Search</label>
+                <div className="ri-reports-interface__search-input">
+                  <Search className="ri-reports-interface__search-icon" />
+                  <input
+                    type="text"
+                    className="ri-reports-interface__filter-input"
+                    placeholder="Search reports, employees, stores..."
+                    value={filters.search}
+                    onChange={(e) => handleFilterChange('search', e.target.value)}
                   />
                 </div>
-              )}
+              </div>
+
+              {/* Status Filter */}
+              <div className="ri-reports-interface__filter-group">
+                <label className="ri-reports-interface__filter-label">Status</label>
+                <select
+                  className="ri-reports-interface__filter-select"
+                  value={filters.status}
+                  onChange={(e) => handleFilterChange('status', e.target.value)}
+                >
+                  <option value="all">All Status</option>
+                  <option value="APPROVED">Approved</option>
+                  <option value="SUBMITTED_REVIEW">Under Review</option>
+                  <option value="SUBMITTED_APPROVAL">Pending Approval</option>
+                  <option value="DECLINED">Declined</option>
+                  <option value="DISCREPANCY">Discrepancy</option>
+                </select>
+              </div>
+
+              {/* Severity Filter */}
+              <div className="ri-reports-interface__filter-group">
+                <label className="ri-reports-interface__filter-label">Severity</label>
+                <select
+                  className="ri-reports-interface__filter-select"
+                  value={filters.severity}
+                  onChange={(e) => handleFilterChange('severity', e.target.value)}
+                >
+                  <option value="all">All Severities</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+
+              {/* Incident Type Filter */}
+              <div className="ri-reports-interface__filter-group">
+                <label className="ri-reports-interface__filter-label">Incident Type</label>
+                <select
+                  className="ri-reports-interface__filter-select"
+                  value={filters.incidentType}
+                  onChange={(e) => handleFilterChange('incidentType', e.target.value)}
+                >
+                  <option value="all">All Types</option>
+                  <option value="theftPrevented">Theft Prevented</option>
+                  <option value="theftReported">Theft Reported</option>
+                  <option value="incidentReported">Incident Reported</option>
+                  <option value="customerDenied">Customer Denied</option>
+                  <option value="cashierSuspicious">Cashier Suspicious</option>
+                </select>
+              </div>
             </div>
 
-            {/* Loading State */}
-            {isLoading && (
-              <div className="reports-interface__loading">
-                <div className="reports-interface__spinner"></div>
-                <p>Loading data...</p>
+            {/* Apply Filters Section */}
+            <div className="ri-reports-interface__apply-filters-section">
+              <div className="ri-reports-interface__pagination-info">
+                {hasAppliedFilters && totalCount !== undefined && (
+                  <span>Showing filtered results ({totalCount} total)</span>
+                )}
               </div>
-            )}
-
-            {/* Statistics Cards */}
-            {!isLoading && statistics && (
-              <div className="reports-interface__statistics">
-                {Object.entries(statistics).map(([key, value], index) => (
-                  <div 
-                    key={key} 
-                    className={`reports-interface__stat-card reports-interface__stat-card--${index % 4}`}
-                    onClick={() => handleMetricClick(key)}
-                  >
-                    <div className="reports-interface__stat-header">
-                      <h3 className="reports-interface__stat-title">
-                        {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}
-                      </h3>
-                      <div className="reports-interface__stat-avatars">
-                        <div className="reports-interface__avatar reports-interface__avatar--blue"></div>
-                        <div className="reports-interface__avatar reports-interface__avatar--green"></div>
-                        <div className="reports-interface__avatar reports-interface__avatar--purple"></div>
-                      </div>
-                    </div>
-                    <div className="reports-interface__stat-value">
-                      {typeof value === 'object' ? value.count || 0 : value || 0}
-                    </div>
-                    <div className="reports-interface__stat-trend">
-                      <span className="reports-interface__trend-indicator">
-                        {filteredCategory === key ? '✓ Selected' : 'Click to filter'}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Clear Filters */}
-            {filteredCategory && (
-              <div className="reports-interface__clear-filters">
-                <button 
-                  className="reports-interface__clear-button"
-                  onClick={clearFilters}
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button
+                  className="ri-reports-interface__apply-filters-btn"
+                  onClick={handleApplyFilters}
+                  disabled={loading}
                 >
-                  Clear Filters
+                  {loading ? <div className="ri-reports-interface__loading-spinner" /> : <Filter size={16} />}
+                  Apply Filters
+                </button>
+                <button className="ri-reports-interface__export-btn" onClick={handleExport}>
+                  <Download size={16} />
+                  Export
                 </button>
               </div>
-            )}
+            </div>
+          </div>
 
-            {/* Reports Table */}
-            <div className="reports-interface__table">
-              <div className="reports-interface__table-header">
-                <div className="reports-interface__header-cell">Name</div>
-                <div className="reports-interface__header-cell">Status</div>
-                <div className="reports-interface__header-cell">Details</div>
-                <div className="reports-interface__header-cell">Severity</div>
-                <div className="reports-interface__header-cell">Media</div>
-              </div>
-              
-              <div className="reports-interface__table-body">
-                {filteredReports.length > 0 ? (
-                  filteredReports.map((report) => (
-                    <div 
-                      key={report.id} 
-                      className={`reports-interface__table-row ${getSeverityClass(report.severity)}`}
-                    >
-                      <div className="reports-interface__cell reports-interface__cell--name">
-                        <div className="reports-interface__name-section">
-                          <Video className="reports-interface__report-icon" />
-                          <div>
-                            <div className="reports-interface__report-name">
-                              {report.title || report.name || 'Unnamed Report'}
+          {/* Error State */}
+          {error && (
+            <div className="ri-reports-interface__error-message">
+              Error loading reports: {typeof error === 'string' ? error : JSON.stringify(error)}
+            </div>
+          )}
+
+          {/* Empty State or Reports Table/Cards */}
+          {showEmptyState ? (
+            <div className="ri-reports-interface__empty-state">
+              <FileX className="ri-reports-interface__empty-state-icon" />
+              <h3>No reports found</h3>
+              <p>
+                {hasAppliedFilters
+                  ? 'Try adjusting your filters to see more results.'
+                  : 'No reports have been created yet. Reports will appear here once they have been generated.'}
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* Desktop Table View */}
+              <div className="ri-reports-interface__table">
+                <div className="ri-reports-interface__table-header">
+                  <div>Store</div>
+                  <div>Status</div>
+                  <div>Description & Date</div>
+                  <div>Severity</div>
+                  <div>Media</div>
+                </div>
+
+                {/* Loading State */}
+                {loading && reports.length === 0 && (
+                  <div className="ri-reports-interface__empty-state">
+                    <div className="ri-reports-interface__loading-spinner" style={{ width: '2rem', height: '2rem', margin: '0 auto 1rem' }} />
+                    <h3>Loading reports...</h3>
+                    <p>Please wait while we fetch the latest reports.</p>
+                  </div>
+                )}
+
+                {/* Reports List */}
+                <div className="ri-reports-interface__table-body">
+                  {reports.map((report) => (
+                    <div key={report.id} className="ri-reports-interface__table-row">
+                      <div className="ri-reports-interface__cell">
+                        <div className="ri-reports-interface__store">
+                          <img
+                            src={report.store?.image || '/default/store.png'}
+                            alt={report.store?.store_name || 'Store'}
+                            className="ri-reports-interface__store-image"
+                            onError={(e) => {
+                              e.target.src = '/default/store.png';
+                            }}
+                          />
+                          <div className="ri-reports-interface__store-details">
+                            <div className="ri-reports-interface__store-name">
+                              {report.store?.store_name || 'Unknown Store'}
                             </div>
-                            <div className="reports-interface__report-location">
-                              <MapPin className="reports-interface__location-icon" />
-                              {report.store?.name || report.location || 'Unknown Location'}
+                            <div className="ri-reports-interface__store-location">
+                              {report.store?.store_city || 'Unknown Location'}
                             </div>
                           </div>
                         </div>
                       </div>
-                      
-                      <div className="reports-interface__cell">
-                        <span className="reports-interface__status">
-                          {report.status || 'Unknown'}
+
+                      <div className="ri-reports-interface__cell">
+                        <div className={getStatusClass(report.status)}>
+                          {formatStatus(report.status)}
+                        </div>
+                      </div>
+
+                      <div className="ri-reports-interface__cell">
+                        <div>
+                          <div className="ri-reports-interface__date">
+                            {new Date(report.incident_date).toLocaleDateString()} at{' '}
+                            {report.incident_time || 'Unknown time'}
+                          </div>
+                          <div className="ri-reports-interface__details">
+                            {report.details || 'No description available'}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="ri-reports-interface__cell">
+                        <span className={getSeverityClass(report.severity || 'low')}>
+                          {(report.severity || 'low').toUpperCase()}
                         </span>
                       </div>
-                      
-                      <div className="reports-interface__cell">
-                        <div className="reports-interface__date">
-                          {new Date(report.created_at || report.date).toLocaleDateString()}
-                        </div>
-                        <div className="reports-interface__details">
-                          {report.description || report.details || 'No details available'}
-                        </div>
-                      </div>
-                      
-                      <div className="reports-interface__cell">
-                        <span className={`reports-interface__severity-badge ${getSeverityClass(report.severity)}`}>
-                          {report.severity || 'Unknown'}
-                        </span>
-                      </div>
-                      
-                      <div className="reports-interface__cell">
-                        <div className="reports-interface__media-section">
-                          {report.media_files && report.media_files.length > 0 ? (
-                            report.media_files.slice(0, 2).map((media, index) => (
-                              <img 
-                                key={index} 
-                                src={media.file || media} 
-                                alt={`Media ${index + 1}`} 
-                                className="reports-interface__media-image" 
-                                onError={(e) => {
-                                  e.target.style.display = 'none';
-                                }}
-                              />
-                            ))
-                          ) : (
-                            <span className="reports-interface__no-media">
-                              No media available
-                            </span>
-                          )}
-                        </div>
+
+                      <div className="ri-reports-interface__cell">
+                        {renderMediaThumbnails(report.media_files)}
                       </div>
                     </div>
-                  ))
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {reports.length > 0 && (
+                  <div className="ri-reports-interface__pagination-section">
+                    <div className="ri-reports-interface__pagination-info">
+                      Showing {reports.length} of {totalCount || 0} reports
+                    </div>
+                    {next && (
+                      <button
+                        className="ri-reports-interface__load-more-btn"
+                        onClick={handleLoadMore}
+                        disabled={loading}
+                      >
+                        {loading ? <div className="ri-reports-interface__loading-spinner" /> : 'Load More'}
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Cards View */}
+              <div className="ri-reports-interface__mobile-cards">
+                {loading && reports.length === 0 ? (
+                  <div className="ri-reports-interface__empty-state">
+                    <div className="ri-reports-interface__loading-spinner" style={{ width: '2rem', height: '2rem', margin: '0 auto 1rem' }} />
+                    <h3>Loading reports...</h3>
+                    <p>Please wait while we fetch the latest reports.</p>
+                  </div>
                 ) : (
-                  <div className="reports-interface__empty-state">
-                    <p>No reports found for the selected criteria.</p>
+                  <>
+                    {reports.map((report) => renderMobileCard(report))}
+                    
+                    {/* Mobile Pagination */}
+                    {reports.length > 0 && (
+                      <div className="ri-reports-interface__pagination-section">
+                        <div className="ri-reports-interface__pagination-info">
+                          Showing {reports.length} of {totalCount || 0} reports
+                        </div>
+                        {next && (
+                          <button
+                            className="ri-reports-interface__load-more-btn"
+                            onClick={handleLoadMore}
+                            disabled={loading}
+                          >
+                            {loading ? <div className="ri-reports-interface__loading-spinner" /> : 'Load More'}
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Media Viewer Modal */}
+          {selectedMedia && (
+            <div className="ri-reports-interface__media-modal" onClick={closeMediaViewer}>
+              <div className="ri-reports-interface__media-modal-content" onClick={(e) => e.stopPropagation()}>
+                <button className="ri-reports-interface__media-modal-close" onClick={closeMediaViewer}>
+                  <X size={24} />
+                </button>
+                
+                <div className="ri-reports-interface__media-viewer">
+                  {selectedMedia.length > 1 && (
+                    <>
+                      <button
+                        className="ri-reports-interface__media-nav-btn ri-reports-interface__media-nav-prev"
+                        onClick={() => navigateMedia('prev')}
+                        disabled={currentMediaIndex === 0}
+                      >
+                        <ChevronLeft size={24} />
+                      </button>
+                      <button
+                        className="ri-reports-interface__media-nav-btn ri-reports-interface__media-nav-next"
+                        onClick={() => navigateMedia('next')}
+                        disabled={currentMediaIndex === selectedMedia.length - 1}
+                      >
+                        <ChevronRight size={24} />
+                      </button>
+                    </>
+                  )}
+
+                  {selectedMedia[currentMediaIndex] && (
+                    <>
+                      {isVideoFile(selectedMedia[currentMediaIndex].file) ? (
+                        <div className="ri-reports-interface__video-player">
+                          <video
+                            id={`modal-video-${currentMediaIndex}`}
+                            className="ri-reports-interface__video-element"
+                            src={selectedMedia[currentMediaIndex].file}
+                            onTimeUpdate={(e) => handleVideoProgress(`modal-video-${currentMediaIndex}`, e)}
+                            onLoadedMetadata={(e) => handleVideoProgress(`modal-video-${currentMediaIndex}`, e)}
+                          />
+                          <div className="ri-reports-interface__video-controls">
+                            <button
+                              className="ri-reports-interface__video-control-btn"
+                              onClick={() => toggleVideoPlay(`modal-video-${currentMediaIndex}`)}
+                            >
+                              {videoStates[`modal-video-${currentMediaIndex}`]?.isPlaying ? <Pause size={20} /> : <Play size={20} />}
+                            </button>
+                            
+                            <div
+                              className="ri-reports-interface__video-progress"
+                              onClick={(e) => seekVideo(`modal-video-${currentMediaIndex}`, e)}
+                            >
+                              <div
+                                className="ri-reports-interface__video-progress-bar"
+                                style={{ width: `${videoStates[`modal-video-${currentMediaIndex}`]?.progress || 0}%` }}
+                              />
+                            </div>
+                            
+                            <div className="ri-reports-interface__video-time">
+                              {formatTime(videoStates[`modal-video-${currentMediaIndex}`]?.currentTime || 0)} / {formatTime(videoStates[`modal-video-${currentMediaIndex}`]?.duration || 0)}
+                            </div>
+                            
+                            <button
+                              className="ri-reports-interface__video-control-btn"
+                              onClick={() => toggleVideoMute(`modal-video-${currentMediaIndex}`)}
+                            >
+                              {videoStates[`modal-video-${currentMediaIndex}`]?.isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <img
+                          className="ri-reports-interface__image-viewer"
+                          src={selectedMedia[currentMediaIndex].file}
+                          alt={`Media ${currentMediaIndex + 1}`}
+                        />
+                      )}
+                    </>
+                  )}
+                </div>
+                
+                {selectedMedia.length > 1 && (
+                  <div className="ri-reports-interface__media-counter">
+                    {currentMediaIndex + 1} of {selectedMedia.length}
                   </div>
                 )}
               </div>
             </div>
-          </div>
-        </main>
+          )}
+        </div>
       </div>
     </div>
   );
