@@ -8,7 +8,7 @@ export const setLogoutHandler = (handler) => {
 };
 
 const axiosInstance = axios.create({
-  baseURL: 'https://server.survill.com',
+  baseURL: 'https://server-client.ngrok.app'
 });
 
 axiosInstance.interceptors.request.use((config) => {

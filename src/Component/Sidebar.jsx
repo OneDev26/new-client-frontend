@@ -1,375 +1,94 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  Star,
-  Clock,
-  Layout,
-  Goal,
-  Share2,
-  File,
-  PieChart,
-  Folder,
-  Bell,
-  Settings,
-  ChevronDown,
-  Plus,
-  Headset,
-  LogOut,
-} from 'lucide-react';
-import { logout } from '../features/auth/authSlice'; // adjust the path as needed
+  LayoutDashboard, Clock3, Star, CircleUserRound, Video, ClipboardList,
+  ShieldCheck, UsersRound, UserRound, CircleHelp, Headphones,
+  Store, ChevronDown, X
+} from "lucide-react";
+import { fetchStoresThunk } from "../features/stores/storeThunks";
+import survillLogo from "../assets/Survill_logo.png";
 
-const styles = {
-  sidebar: {
-    width: '280px',
-    minWidth: '60px',
-    height: '100vh',
-    transition: 'transform 0.3s ease',
-    background: 'transparent',
-    display: 'flex',
-    flexDirection: 'column',
-    zIndex: 1000,
-    position: 'relative', // so the "X" button can be absolutely positioned
-  },
-  mobileSidebar: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    transform: 'translateX(-100%)',
-    zIndex: 1000,
-  },
-  mobileSidebarOpen: {
-    transform: 'translateX(0)',
-  },
-  overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 999,
-    transition: 'opacity 0.3s ease',
-  },
-  logo: {
-    width: '32px',
-    height: '32px',
-    backgroundColor: '#000',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#fff',
-    margin: '16px',
-    fontWeight: 'bold',
-    fontSize: '18px',
-  },
-  nav: {
-    flex: 1,
-    overflowY: 'auto',
-    padding: '8px 0',
-  },
-  menuItem: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '10px 16px',
-    color: '#333',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s ease',
-    position: 'relative',
-    textDecoration: 'none',
-  },
-  menuIcon: {
-    width: '20px',
-    height: '20px',
-    marginRight: '12px',
-  },
-  menuLabel: {
-    fontSize: '14px',
-    flex: 1,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-  submenu: {
-    marginLeft: '28px',
-    paddingLeft: '12px',
-    borderLeft: '1px solid #eee',
-  },
-  badge: {
-    backgroundColor: '#ff4757',
-    color: '#fff',
-    padding: '2px 6px',
-    borderRadius: '10px',
-    fontSize: '12px',
-    marginLeft: '8px',
-  },
-  newTag: {
-    color: '#ff4757',
-    fontSize: '12px',
-    marginLeft: '8px',
-  },
-  collapseButton: {
-    padding: '16px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    borderTop: '1px solid #eee',
-    transition: 'background-color 0.2s ease',
-  },
-};
+const primaryItems = [
+  { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
+  { icon: Clock3, label: "Monitoring Status", path: "/monitoring-status" },
+  { icon: Star, label: "Prevention Highlights", path: "/prevention-highlights" },
+  { icon: CircleUserRound, label: "Cashier Activity", path: "/cashier-activity" },
+  { icon: Video, label: "Video Evidence", path: "/video-evidence" },
+  { icon: ClipboardList, label: "Reports", path: "/reports", activePath: "/reports" },
+  { icon: ShieldCheck, label: "Camera & Security", path: "/camera-security" },
+  { icon: UsersRound, label: "Refer & Earn", path: "/refer-earn" },
+];
 
-const MenuItem = ({
-  icon: Icon,
-  label,
-  badge,
-  isNew,
-  hasSubmenu,
-  onClick,
-  isOpen,
-  isCollapsed,
-  path,
-  isMobile,
-}) => {
-  // Conditionally override styles for mobile
-  const menuItemStyle = {
-    ...styles.menuItem,
-    ...(isMobile
-      ? {
-          color: '#fff',
-          justifyContent: 'center',
-        }
-      : {}),
-  };
-  const menuIconStyle = {
-    ...styles.menuIcon,
-    ...(isMobile ? { color: '#fff' } : {}),
-  };
-  const menuLabelStyle = {
-    ...styles.menuLabel,
-    ...(isMobile
-      ? {
-          color: '#fff',
-          fontSize: '18px',
-          textAlign: 'center',
-        }
-      : {}),
-  };
+const secondaryItems = [
+  { icon: UserRound, label: "Account", path: "/account" },
+  { icon: CircleHelp, label: "Help & Support", path: "/help-support" },
+];
 
-  return path ? (
-    <Link to={path} style={menuItemStyle}>
-      <Icon style={menuIconStyle} />
-      {!isCollapsed && (
-        <>
-          <span style={menuLabelStyle}>{label}</span>
-          {badge && <span style={styles.badge}>{badge}</span>}
-          {isNew && <span style={styles.newTag}>New</span>}
-          {hasSubmenu && (
-            <Plus
-              style={{
-                marginLeft: 'auto',
-                transition: 'transform 0.2s ease',
-                transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                ...(isMobile ? { color: '#fff' } : {}),
-              }}
-            />
-          )}
-        </>
-      )}
-    </Link>
-  ) : (
-    <div onClick={onClick} style={menuItemStyle}>
-      <Icon style={menuIconStyle} />
-      {!isCollapsed && (
-        <>
-          <span style={menuLabelStyle}>{label}</span>
-          {badge && <span style={styles.badge}>{badge}</span>}
-          {isNew && <span style={styles.newTag}>New</span>}
-          {hasSubmenu && (
-            <Plus
-              style={{
-                marginLeft: 'auto',
-                transition: 'transform 0.2s ease',
-                transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                ...(isMobile ? { color: '#fff' } : {}),
-              }}
-            />
-          )}
-        </>
-      )}
-    </div>
+const SidebarLink = ({ item, onClose }) => {
+  const location = useLocation();
+  const Icon = item.icon;
+  const isActive = location.pathname === (item.activePath || item.path);
+  return (
+    <NavLink to={item.path} onClick={onClose} className={`sidebar-link ${isActive ? "active" : ""}`}>
+      <Icon size={20} strokeWidth={1.8} /><span>{item.label}</span>
+    </NavLink>
   );
 };
 
 const Sidebar = ({ isMobileSidebarOpen, onClose }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [openMenus, setOpenMenus] = useState({
-    alerts: false,
-    reports: false,
-  });
-
   const dispatch = useDispatch();
-  const isMobile = window.innerWidth <= 768;
+  const { stores, loading } = useSelector((state) => state.stores);
+  const [selectedStore, setSelectedStore] = useState(null);
+  const [storeMenuOpen, setStoreMenuOpen] = useState(false);
 
-  const toggleMenu = (menuId) => {
-    setOpenMenus((prev) => ({
-      ...prev,
-      [menuId]: !prev[menuId],
-    }));
-  };
+  useEffect(() => { if (!stores.length) dispatch(fetchStoresThunk()); }, [dispatch, stores.length]);
+  useEffect(() => { if (!selectedStore && stores.length) setSelectedStore(stores[0]); }, [stores, selectedStore]);
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
-  const menuItems = [
-    { icon: Layout, label: 'Dashboard', path: '/' },
-    { icon: Folder, label: 'Client Queries', path: '/client-queries' },
-    { icon: PieChart, label: 'Reports', path: '/reports' },
-    { icon: Clock, label: 'Suspicious Transactions', path: '/suspicious-transaction' },
-    { icon: Headset, label: 'Contact Us', path: '/contact-page' },
-    { icon: Settings, label: 'Profile', path: '/profile-page' },
-  ];
-
-  // Combine base sidebar style with mobile overrides
-  const sidebarStyle = {
-    ...styles.sidebar,
-    ...(isMobile
-      ? {
-          backgroundColor: '#d82d57', // maroon background for mobile
-          color: '#fff',              // white text
-        }
-      : {}),
-    ...(isMobile ? styles.mobileSidebar : {}),
-    ...(isMobile && isMobileSidebarOpen ? styles.mobileSidebarOpen : {}),
-  };
+  const storeName = selectedStore?.store_name || (loading ? "Loading store..." : "Your Store");
+  const storeLocation = selectedStore
+    ? [selectedStore.store_address, selectedStore.store_city, selectedStore.store_state].filter(Boolean).join(", ")
+    : "Store location";
 
   return (
     <>
-      {/* Fade overlay for mobile */}
-      {isMobile && isMobileSidebarOpen && (
-        <div style={styles.overlay} onClick={onClose}></div>
-      )}
+      {isMobileSidebarOpen && <button className="sidebar-overlay" onClick={onClose} aria-label="Close navigation" />}
+      <aside className={`portal-sidebar ${isMobileSidebarOpen ? "is-open" : ""}`}>
+        <div className="sidebar-brand">
+          <img className="sidebar-logo" src={survillLogo} alt="Survill Client Portal" />
+          <button className="sidebar-close" onClick={onClose} aria-label="Close menu"><X size={22} /></button>
+        </div>
 
-      <div style={sidebarStyle}>
-        {/* "X" button in top-right corner (only on mobile & only if open) */}
-        {isMobile && isMobileSidebarOpen && (
-          <div
-            onClick={onClose}
-            style={{
-              position: 'absolute',
-              top: '0px',
-              right: '15px',
-              fontSize: '40px',
-              fontWeight: '400',
-              color: '#fff',
-              cursor: 'pointer',
-              zIndex: 1001,
-            }}
-          >
-            &times;
-          </div>
-        )}
-
-        <nav
-          style={{
-            ...styles.nav,
-            ...(isMobile
-              ? {
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'start',
-                  alignItems: 'center',
-                  marginTop:'80px',
-                  gap:'20px'
-                }
-              : {}),
-          }}
-        >
-          {menuItems.map((item, index) => (
-            <div key={index}>
-              <MenuItem
-                icon={item.icon}
-                label={item.label}
-                badge={item.badge}
-                isNew={item.isNew}
-                hasSubmenu={item.hasSubmenu}
-                onClick={() => item.hasSubmenu && toggleMenu(item.id)}
-                isOpen={openMenus[item.id]}
-                isCollapsed={isCollapsed}
-                path={item.path}
-                isMobile={isMobile}
-              />
-              {!isCollapsed && item.hasSubmenu && openMenus[item.id] && (
-                <div style={styles.submenu}>
-                  {item.submenu?.map((subItem, subIndex) => (
-                    <div key={subIndex}>
-                      <MenuItem
-                        icon={subItem.icon}
-                        label={subItem.label}
-                        badge={subItem.badge}
-                        isNew={subItem.isNew}
-                        hasSubmenu={subItem.hasSubmenu}
-                        onClick={() => subItem.hasSubmenu && toggleMenu(subItem.id)}
-                        isOpen={openMenus[subItem.id]}
-                        isCollapsed={isCollapsed}
-                        path={subItem.path}
-                        isMobile={isMobile}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+        <div className="sidebar-store-wrap">
+          <button className="sidebar-store" onClick={() => setStoreMenuOpen((open) => !open)} aria-expanded={storeMenuOpen}>
+            <span className="store-icon"><Store size={20} /></span>
+            <span className="store-copy"><strong>{storeName}</strong><small>{storeLocation}</small></span>
+            <ChevronDown size={16} className={storeMenuOpen ? "rotated" : ""} />
+          </button>
+          {storeMenuOpen && stores.length > 0 && (
+            <div className="sidebar-store-menu">
+              {stores.map((storeItem) => (
+                <button key={storeItem.id} onClick={() => { setSelectedStore(storeItem); setStoreMenuOpen(false); }}>
+                  {storeItem.store_name}
+                </button>
+              ))}
             </div>
-          ))}
+          )}
+        </div>
 
-          {/* Logout Button */}
-          <div
-            onClick={handleLogout}
-            style={{
-              ...styles.menuItem,
-              ...(isMobile
-                ? {
-                    color: '#fff',
-                    justifyContent: 'center',
-                  }
-                : {}),
-            }}
-          >
-            <LogOut
-              style={{
-                ...styles.menuIcon,
-                ...(isMobile ? { color: '#fff' } : {}),
-              }}
-            />
-            {!isCollapsed && (
-              <span
-                style={{
-                  ...styles.menuLabel,
-                  ...(isMobile
-                    ? { color: '#fff', fontSize: '18px', textAlign: 'center' }
-                    : {}),
-                }}
-              >
-                Logout
-              </span>
-            )}
-          </div>
+        <nav className="sidebar-nav" aria-label="Main navigation">
+          {primaryItems.map((item) => <SidebarLink key={item.label} item={item} onClose={onClose} />)}
+          <div className="sidebar-nav-divider" />
+          {secondaryItems.map((item) => <SidebarLink key={item.label} item={item} onClose={onClose} />)}
         </nav>
 
-        {/* Collapse/Expand button (for desktop usage) */}
-        {!isMobile && (
-          <div
-            style={styles.collapseButton}
-            onClick={() => setIsCollapsed(!isCollapsed)}
-          >
-            <Share2 size={20} />
-          </div>
-        )}
-      </div>
+        <div className="sidebar-help">
+          <Headphones size={24} />
+          <div><strong>Need help?</strong><span>Our support team is here to help you.</span></div>
+          <NavLink to="/help-support">Contact Support</NavLink>
+        </div>
+      </aside>
     </>
   );
 };
-
 export default Sidebar;

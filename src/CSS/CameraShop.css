@@ -1,0 +1,1094 @@
+.camera-shop-page {
+  --camera-primary: #1555d4;
+  --camera-purple: #5337e7;
+  --camera-text: #121b31;
+  --camera-muted: #667389;
+  --camera-border: #e1e7ef;
+  --camera-bg: #f8f9fc;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+
+  padding: 16px;
+
+  color: var(--camera-text);
+
+  background:
+    radial-gradient(
+      circle at 82% 0%,
+      rgba(82, 55, 231, 0.035),
+      transparent 28%
+    ),
+    var(--camera-bg);
+
+  font-family: "Geist", "Segoe UI", Arial, sans-serif;
+}
+
+.camera-shop-page * {
+  box-sizing: border-box;
+}
+
+.camera-shop-page button,
+.camera-shop-page input,
+.camera-shop-page select {
+  font: inherit;
+}
+
+.camera-shop-page button {
+  cursor: pointer;
+}
+
+/* ========================================================
+   MAIN LAYOUT
+======================================================== */
+
+.camera-shop-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 2.45fr)
+    minmax(285px, 1fr);
+
+  gap: 18px;
+}
+
+.camera-shop-main,
+.camera-shop-sidebar {
+  min-width: 0;
+}
+
+.camera-shop-main {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.camera-shop-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ========================================================
+   FEATURE STRIP
+======================================================== */
+
+.camera-feature-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  min-height: 63px;
+
+  overflow: hidden;
+
+  border: 1px solid var(--camera-border);
+  border-radius: 7px;
+
+  background: #fff;
+}
+
+.camera-feature-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 11px 15px;
+
+  border-right: 1px solid #edf0f4;
+}
+
+.camera-feature-item:last-child {
+  border-right: 0;
+}
+
+.camera-feature-icon {
+  display: grid;
+
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  color: #2863df;
+  background: #eef4ff;
+}
+
+.camera-feature-item strong,
+.camera-feature-item small {
+  display: block;
+}
+
+.camera-feature-item strong {
+  font-size: 8px;
+  font-weight: 650;
+}
+
+.camera-feature-item small {
+  margin-top: 5px;
+
+  color: var(--camera-muted);
+
+  font-size: 6px;
+}
+
+/* ========================================================
+   CATEGORY TABS
+======================================================== */
+
+.camera-category-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+
+  min-height: 58px;
+
+  overflow: hidden;
+
+  border: 1px solid var(--camera-border);
+  border-radius: 7px;
+
+  background: #fff;
+}
+
+.camera-category-tabs > button {
+  display: flex;
+
+  min-width: 0;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 9px 12px;
+
+  border: 0;
+  border-right: 1px solid #edf0f4;
+
+  color: #3c485f;
+  background: #fff;
+
+  text-align: left;
+}
+
+.camera-category-tabs > button:last-child {
+  border-right: 0;
+}
+
+.camera-category-tabs > button.active {
+  position: relative;
+
+  z-index: 1;
+
+  color: #1f58ce;
+
+  background: #f8f9ff;
+
+  box-shadow:
+    inset 0 0 0 1px #6689ec;
+}
+
+.camera-category-tabs > button > span {
+  display: grid;
+
+  width: 28px;
+  height: 28px;
+
+  flex: 0 0 28px;
+
+  place-items: center;
+
+  color: #253852;
+}
+
+.camera-category-tabs > button.active > span {
+  color: #2e63d8;
+}
+
+.camera-category-tabs strong,
+.camera-category-tabs small {
+  display: block;
+
+  white-space: nowrap;
+}
+
+.camera-category-tabs strong {
+  overflow: hidden;
+
+  font-size: 7px;
+
+  text-overflow: ellipsis;
+}
+
+.camera-category-tabs small {
+  margin-top: 4px;
+
+  color: #657188;
+
+  font-size: 5.3px;
+}
+
+/* ========================================================
+   CAMERA GRID
+======================================================== */
+
+.camera-product-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+.camera-product-card {
+  position: relative;
+
+  min-width: 0;
+
+  padding: 10px 11px 11px;
+
+  border: 1px solid var(--camera-border);
+  border-radius: 7px;
+
+  background: #fff;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.camera-product-card:hover {
+  border-color: #c9d5e8;
+
+  box-shadow:
+    0 5px 16px rgba(27, 43, 71, 0.06);
+
+  transform: translateY(-1px);
+}
+
+.camera-product-card.selected {
+  border-color: #6282e9;
+
+  box-shadow:
+    0 0 0 1px rgba(69, 96, 221, 0.1);
+}
+
+.camera-favorite {
+  position: absolute;
+
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+
+  display: grid;
+
+  width: 27px;
+  height: 27px;
+
+  place-items: center;
+
+  border: 0;
+
+  color: #74839a;
+  background: transparent;
+}
+
+.camera-favorite.active {
+  color: #ef5364;
+}
+
+/* IMAGE AREA */
+
+.camera-product-image {
+  display: flex;
+
+  width: 100%;
+  height: 126px;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 7px;
+
+  overflow: hidden;
+}
+
+.camera-product-image img {
+  display: block;
+
+  width: 87%;
+  height: 112px;
+
+  object-fit: contain;
+}
+
+/* NAME */
+
+.camera-product-heading {
+  display: flex;
+
+  min-height: 26px;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 7px;
+}
+
+.camera-product-heading h3 {
+  margin: 0;
+
+  overflow: hidden;
+
+  color: #1b263a;
+
+  font-size: 8.4px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.camera-product-badge {
+  display: inline-flex;
+
+  min-height: 18px;
+
+  align-items: center;
+
+  padding: 0 7px;
+
+  border-radius: 9px;
+
+  font-size: 5px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.camera-product-badge.purple {
+  color: #5338dd;
+  background: #eeeaff;
+}
+
+.camera-product-badge.green {
+  color: #078e53;
+  background: #e2f6eb;
+}
+
+.camera-product-badge.blue {
+  color: #286adf;
+  background: #e9f1ff;
+}
+
+.camera-product-badge.orange {
+  color: #d97810;
+  background: #fff0dc;
+}
+
+.camera-product-badge.teal {
+  color: #168470;
+  background: #e2f6f1;
+}
+
+/* FEATURE LIST */
+
+.camera-feature-list {
+  display: flex;
+
+  min-height: 78px;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  margin: 7px 0 10px;
+  padding: 0;
+
+  list-style: none;
+}
+
+.camera-feature-list li {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #465269;
+
+  font-size: 6.2px;
+}
+
+.camera-feature-list li svg {
+  flex: 0 0 auto;
+
+  color: #1471c8;
+}
+
+/* BUTTONS */
+
+.camera-card-actions {
+  display: grid;
+
+  grid-template-columns: 1fr 1.1fr;
+
+  gap: 8px;
+}
+
+.camera-details-btn,
+.camera-select-btn {
+  height: 31px;
+
+  border-radius: 4px;
+
+  font-size: 6px;
+  font-weight: 600;
+}
+
+.camera-details-btn {
+  border: 1px solid #bbcae0;
+
+  color: #1553c8;
+  background: #fff;
+}
+
+.camera-select-btn {
+  border: 1px solid #1555d4;
+
+  color: #fff;
+  background: #1555d4;
+}
+
+.camera-select-btn.selected {
+  color: #0b8650;
+  border-color: #94d9b8;
+  background: #e8f8ef;
+}
+
+.camera-details-btn:hover {
+  background: #f6f9ff;
+}
+
+.camera-select-btn:hover {
+  filter: brightness(0.97);
+}
+
+/* ========================================================
+   SERVICE INFO
+======================================================== */
+
+.camera-service-info {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  overflow: hidden;
+
+  border: 1px solid #dce9e3;
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f7fcfa,
+      #fff
+    );
+}
+
+.camera-service-info article {
+  display: flex;
+
+  min-height: 87px;
+
+  align-items: flex-start;
+
+  gap: 14px;
+
+  padding: 15px 19px;
+
+  border-right: 1px solid #e1ece6;
+}
+
+.camera-service-info article:last-child {
+  border-right: 0;
+}
+
+.service-info-icon {
+  display: grid;
+
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  place-items: center;
+
+  border-radius: 50%;
+}
+
+.service-info-icon.agreement {
+  color: #14745c;
+  background: #e4f5ee;
+}
+
+.service-info-icon.install {
+  color: #254c65;
+  background: #edf3f7;
+}
+
+.camera-service-info h3 {
+  margin: 0;
+
+  color: #22654e;
+
+  font-size: 8px;
+}
+
+.camera-service-info article:last-child h3 {
+  color: #257155;
+}
+
+.camera-service-info p {
+  margin: 6px 0 0;
+
+  color: #5d6c7c;
+
+  font-size: 6px;
+  line-height: 1.55;
+}
+
+/* ========================================================
+   EXCLUSIVE OFFER
+======================================================== */
+
+.exclusive-offer-card {
+  overflow: hidden;
+
+  padding: 17px;
+
+  border-radius: 9px;
+
+  color: #fff;
+
+  background:
+    radial-gradient(
+      circle at 75% 25%,
+      rgba(142, 84, 245, 0.65),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      #4c28c5,
+      #712bea
+    );
+
+  box-shadow:
+    0 7px 18px rgba(84, 47, 203, 0.13);
+}
+
+.exclusive-heading {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.exclusive-heading > span {
+  display: grid;
+
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  color: #5b3be2;
+  background: #fff;
+}
+
+.exclusive-heading h2 {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.exclusive-heading strong {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.exclusive-description {
+  margin: 14px 0 15px;
+
+  color: #f1edff;
+
+  font-size: 8.2px;
+  line-height: 1.65;
+}
+
+.exclusive-description strong {
+  color: #fff;
+}
+
+.membership-box {
+  padding: 12px 13px;
+
+  border-radius: 6px;
+
+  color: #263147;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.membership-box h3 {
+  margin: 0 0 9px;
+
+  font-size: 7.5px;
+}
+
+.membership-box ul {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.membership-box li {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  font-size: 6px;
+}
+
+.membership-box li svg {
+  color: #5a43df;
+}
+
+/* ========================================================
+   SIDE CARD
+======================================================== */
+
+.camera-side-card {
+  border: 1px solid var(--camera-border);
+  border-radius: 8px;
+
+  background: #fff;
+}
+
+.plans-card {
+  padding: 14px 13px 0;
+}
+
+.plans-card > h2 {
+  margin: 0 0 12px;
+
+  font-size: 8.3px;
+}
+
+.special-plan-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+.special-plan {
+  display: grid;
+
+  width: 100%;
+  min-height: 80px;
+
+  grid-template-columns:
+    36px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px;
+
+  border: 1px solid #dbd4f7;
+  border-radius: 6px;
+
+  color: #273248;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf9ff,
+      #fff
+    );
+
+  text-align: left;
+}
+
+.plan-icon {
+  display: grid;
+
+  width: 35px;
+  height: 35px;
+
+  place-items: center;
+
+  border-radius: 8px;
+
+  color: #5538dd;
+  background: #eeeaff;
+}
+
+.special-plan strong,
+.special-plan small {
+  display: block;
+}
+
+.special-plan strong {
+  font-size: 6.5px;
+  line-height: 1.35;
+}
+
+.special-plan small {
+  margin-top: 7px;
+
+  color: #69758b;
+
+  font-size: 5px;
+  line-height: 1.4;
+}
+
+.plan-price {
+  display: inline-flex;
+
+  min-height: 23px;
+
+  align-items: center;
+
+  padding: 0 7px;
+
+  border: 1px solid #bbb0f1;
+  border-radius: 4px;
+
+  color: #5438dc;
+  background: #f8f6ff;
+
+  font-size: 5.2px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.termination-note {
+  display: grid;
+
+  grid-template-columns:
+    18px
+    1fr;
+
+  gap: 8px;
+
+  margin: 12px -13px 0;
+  padding: 13px;
+
+  border-top: 1px solid #edf0f4;
+
+  color: #606d83;
+
+  font-size: 5.4px;
+  line-height: 1.5;
+}
+
+/* ========================================================
+   READY CARD
+======================================================== */
+
+.ready-card {
+  padding: 13px 14px;
+
+  border: 1px solid #e3def9;
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fbf9ff,
+      #f3efff
+    );
+}
+
+.ready-card h2 {
+  margin: 0;
+
+  font-size: 8px;
+}
+
+.ready-card p {
+  margin: 5px 0 10px;
+
+  color: #69758b;
+
+  font-size: 5.5px;
+}
+
+.ready-card button {
+  display: inline-flex;
+
+  min-width: 166px;
+  height: 31px;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 10px;
+
+  border: 0;
+  border-radius: 4px;
+
+  color: #fff;
+  background: #5530d9;
+
+  font-size: 6px;
+  font-weight: 600;
+}
+
+.ready-card button > span {
+  display: grid;
+
+  min-width: 17px;
+  height: 17px;
+
+  place-items: center;
+
+  padding: 0 4px;
+
+  border-radius: 9px;
+
+  color: #5530d9;
+  background: #fff;
+
+  font-size: 5px;
+}
+
+/* ========================================================
+   BOTTOM BENEFITS
+======================================================== */
+
+.camera-bottom-benefits {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  margin-top: 17px;
+
+  border-top: 1px solid var(--camera-border);
+
+  background: #fff;
+}
+
+.camera-bottom-benefits article {
+  display: flex;
+
+  min-height: 63px;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  padding: 10px;
+
+  border-right: 1px solid #edf0f4;
+}
+
+.camera-bottom-benefits article:last-child {
+  border-right: 0;
+}
+
+.camera-bottom-benefits article > span {
+  display: grid;
+
+  width: 35px;
+  height: 35px;
+
+  place-items: center;
+
+  color: #1d5ed1;
+}
+
+.camera-bottom-benefits strong,
+.camera-bottom-benefits small {
+  display: block;
+}
+
+.camera-bottom-benefits strong {
+  font-size: 7px;
+}
+
+.camera-bottom-benefits small {
+  margin-top: 4px;
+
+  color: #68758b;
+
+  font-size: 5.2px;
+}
+
+/* ========================================================
+   RESPONSIVE
+======================================================== */
+
+@media (max-width: 1180px) {
+  .camera-shop-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .camera-shop-sidebar {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ready-card {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 920px) {
+  .camera-feature-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .camera-feature-item:nth-child(2) {
+    border-right: 0;
+  }
+
+  .camera-category-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .camera-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .camera-shop-page {
+    padding: 10px;
+  }
+
+  .camera-feature-strip,
+  .camera-category-tabs,
+  .camera-product-grid,
+  .camera-service-info,
+  .camera-shop-sidebar,
+  .camera-bottom-benefits {
+    grid-template-columns: 1fr;
+  }
+
+  .camera-feature-item,
+  .camera-category-tabs > button,
+  .camera-service-info article,
+  .camera-bottom-benefits article {
+    border-right: 0;
+    border-bottom: 1px solid #edf0f4;
+  }
+
+  .camera-feature-item:last-child,
+  .camera-category-tabs > button:last-child,
+  .camera-service-info article:last-child,
+  .camera-bottom-benefits article:last-child {
+    border-bottom: 0;
+  }
+
+  .camera-product-image {
+    height: 150px;
+  }
+
+  .camera-product-image img {
+    height: 135px;
+  }
+
+  .ready-card {
+    grid-column: auto;
+  }
+}
+/* Shared portal typography */
+.camera-shop-page {
+  min-height: auto;
+  padding: 0 0 22px;
+  font-family: var(--portal-font-family);
+  background: transparent;
+}
+
+.camera-feature-item strong,
+.camera-category-tabs strong,
+.camera-product-heading h3,
+.camera-service-info h3,
+.membership-box h3,
+.plans-card > h2,
+.ready-card h2,
+.camera-bottom-benefits strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.camera-feature-item small,
+.camera-category-tabs small,
+.camera-feature-list li,
+.camera-service-info p,
+.exclusive-description,
+.membership-box li,
+.special-plan small,
+.termination-note,
+.ready-card p,
+.camera-bottom-benefits small {
+  font-size: 11px;
+}
+
+.camera-product-badge,
+.plan-price,
+.ready-card button > span {
+  font-size: 10px;
+}
+
+.camera-details-btn,
+.camera-select-btn,
+.ready-card button {
+  font-size: 12px;
+}
+
+.special-plan strong {
+  font-size: 11px;
+}
+
+@media (max-width: 680px) {
+  .camera-shop-page {
+    padding: 0 0 16px;
+  }
+}

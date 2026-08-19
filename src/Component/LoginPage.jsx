@@ -19,7 +19,7 @@ const LoginPage = () => {
   const { loading, error } = useSelector((state) => state.auth);
   
   if (token) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   const handleSubmit = async (e) => {
@@ -28,7 +28,7 @@ const LoginPage = () => {
     const actionResult = await dispatch(loginThunk({ username: email, password }));
     // If login is successful, redirect to the index page
     if (loginThunk.fulfilled.match(actionResult)) {
-      navigate('/');
+      navigate('/dashboard');
     }
   };
 

@@ -709,7 +709,7 @@ const SuspiciousTransactionAlerts = () => {
             <div className="sta-header-title">
               <AlertTriangle className="sta-warning-icon"/><h2>Suspicious Transaction Alerts</h2>
             </div>
-           <Link to="/suspicious-transaction"> <ExternalLink className="sta-external-link"/></Link>
+           <Link to="/monitoring-status"> <ExternalLink className="sta-external-link"/></Link>
           </div>
 
           {renderContent()}

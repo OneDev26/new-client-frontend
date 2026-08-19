@@ -3,7 +3,7 @@
     display: flex;
     max-width: 1000px;
     margin: 0 auto;
-    font-family: sans-serif;
+    font-family: inherit;
     border-radius: 10px;
     overflow: hidden;
   }

@@ -1,13 +1,14 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Index from "./Component/Index";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import ClientMonitoringDashboard from "./Pages/ClientMonitoringDashboard";
 import LoginPage from "./Component/LoginPage";
-import CashierReportsPage from "./Pages/CashierReportsPage";
-import SuspiciousTransactionAlertsPage from "./Pages/SuspiciousTransactionAlertsPage";
-import ClientQueries from "./Pages/ClientQueries";
-import TriggerAlertsPage from "./Pages/TriggerAlertsPage";
+import TransactionActivity from "./Pages/TransactionActivity";
+import MonitoringStatus from "./Pages/MonitoringStatus";
+import CameraShop from "./Pages/CameraShop";
+import PreventionHighlights from "./Pages/PreventionHighlights";
 import ContactPage from "./Pages/ContactPage";
-import ReportsInterface from "./Pages/ReportsInterface";
+import Reports from "./Pages/Reports";
+import EvidenceClips from "./Pages/EvidenceClips";
 import ProfilePage from "./Pages/ProfilePage";
 import PrivateRoute from "./Component/PrivateRoute"; // Adjust the path as needed
 import { Provider } from "react-redux";
@@ -35,58 +36,58 @@ function App() {
           <Routes>
             {/* Protected Routes inside DashboardLayout */}
             <Route
-              path="/"
+              path="/dashboard"
               element={
                 <PrivateRoute>
                   <DashboardLayout>
-                    <Index />
+                    <ClientMonitoringDashboard />
                   </DashboardLayout>
                 </PrivateRoute>
               }
             />
            
             <Route
-              path="/cashier-reports"
+              path="/cashier-activity"
               element={
                 <PrivateRoute>
                   <DashboardLayout>
-                    <CashierReportsPage />
+                    <TransactionActivity />
                   </DashboardLayout>
                 </PrivateRoute>
               }
             />
             <Route
-              path="/suspicious-transaction"
+              path="/monitoring-status"
               element={
                 <PrivateRoute>
                   <DashboardLayout>
-                    <SuspiciousTransactionAlertsPage />
+                    <MonitoringStatus />
                   </DashboardLayout>
                 </PrivateRoute>
               }
             />
             <Route
-              path="/client-queries"
+              path="/camera-security"
               element={
                 <PrivateRoute>
                   <DashboardLayout>
-                    <ClientQueries />
+                    <CameraShop />
                   </DashboardLayout>
                 </PrivateRoute>
               }
             />
             <Route
-              path="/trigger-alerts"
+              path="/prevention-highlights"
               element={
                 <PrivateRoute>
                   <DashboardLayout>
-                    <TriggerAlertsPage />
+                    <PreventionHighlights />
                   </DashboardLayout>
                 </PrivateRoute>
               }
             />
             <Route
-              path="/contact-page"
+              path="/refer-earn"
               element={
                 <PrivateRoute>
                   <DashboardLayout>
@@ -96,17 +97,27 @@ function App() {
               }
             />
             <Route
-              path="/reports"
+              path="/video-evidence"
               element={
                 <PrivateRoute>
                   <DashboardLayout>
-                    <ReportsInterface />
+                    <EvidenceClips />
                   </DashboardLayout>
                 </PrivateRoute>
               }
             />
             <Route
-              path="/profile-page"
+              path="/reports"
+              element={
+                <PrivateRoute>
+                  <DashboardLayout>
+                    <Reports />
+                  </DashboardLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/account"
               element={
                 <PrivateRoute>
                   <DashboardLayout>
@@ -116,6 +127,17 @@ function App() {
               }
             />
 
+            <Route
+              path="/help-support"
+              element={
+                <PrivateRoute>
+                  <DashboardLayout>
+                    <ContactPage />
+                  </DashboardLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
             {/* Public Route */}
             <Route path="/login" element={<LoginPage />} />
           </Routes>
