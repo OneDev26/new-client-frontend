@@ -1,5 +1,8 @@
 import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
+  ArrowLeft,
+  Bell,
   BellRing,
   Check,
   Cloud,
@@ -17,6 +20,12 @@ import {
   Sparkles,
   Truck,
   Wrench,
+  Search,
+  Filter,
+  MoreVertical,
+  Plus,
+  UserRound,
+  ChevronDown,
 } from "lucide-react";
 
 import "../CSS/CameraShop.css";
@@ -210,9 +219,12 @@ const bottomBenefits = [
 ];
 
 export default function CameraShop() {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedCameras, setSelectedCameras] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [mobileTab, setMobileTab] = useState("cameras");
+  const [mobileSearch, setMobileSearch] = useState("");
 
   const visibleCameras = useMemo(() => {
     if (activeCategory === "all") return cameras;
@@ -243,7 +255,19 @@ export default function CameraShop() {
   };
 
   return (
-    <main className="camera-shop-page">
+<main className="camera-shop-page">
+      <section className="mobile-devices-view">
+        <header className="mobile-devices-header">
+          <button type="button" onClick={() => navigate(-1)} aria-label="Go back"><ArrowLeft size={19} /></button>
+          <div><h1>Devices & Cameras</h1><p>Manage all devices and cameras in your store</p></div>
+          <button type="button" aria-label="Notifications"><Bell size={18} /></button>
+          <button type="button" aria-label="Profile"><UserRound size={18} /></button>
+        </header>
+        <div className="mobile-device-search"><Search size={17}/><input value={mobileSearch} onChange={(event) => setMobileSearch(event.target.value)} placeholder="Search devices or cameras..."/><button type="button" aria-label="Filter"><Filter size={17}/></button></div>
+        <nav className="mobile-device-tabs"><button className={mobileTab === "cameras" ? "active" : ""} onClick={() => setMobileTab("cameras")}>Cameras</button><button className={mobileTab === "devices" ? "active" : ""} onClick={() => setMobileTab("devices")}>Devices</button></nav>
+        <MobileDeviceList tab={mobileTab} search={mobileSearch} />
+        <button type="button" className="mobile-add-device"><Plus size={17}/>Add Device</button>
+      </section>
       <div className="camera-shop-layout">
         {/* LEFT SIDE */}
         <section className="camera-shop-main">
@@ -521,4 +545,22 @@ export default function CameraShop() {
       </section>
     </main>
   );
+}
+const managedCameras = [
+  ["Front Entrance", "CAM-001", "192.168.1.101", camera2, true],
+  ["Cash Counter", "CAM-002", "192.168.1.102", camera1, true],
+  ["Aisle View", "CAM-003", "192.168.1.103", camera3, true],
+  ["Parking Area", "CAM-004", "192.168.1.104", camera4, false],
+  ["Stock Room", "CAM-005", "192.168.1.105", camera5, true],
+  ["Back Entrance", "CAM-006", "192.168.1.106", camera6, false],
+];
+
+function MobileDeviceList({ tab, search }) {
+  const rows = tab === "cameras" ? managedCameras : [["Main NVR", "NVR-001", "16 Channel NVR", camera5, true]];
+  const filtered = rows.filter((item) => item[0].toLowerCase().includes(search.trim().toLowerCase()));
+  return <section className="mobile-managed-list">
+    <div className="mobile-list-heading"><h2>{tab === "cameras" ? `Cameras (${managedCameras.length})` : "Devices (1)"}</h2>{tab === "cameras" && <span><i className="online"/>4 Online <i className="offline"/>2 Offline</span>}</div>
+    <div className="mobile-device-rows">{filtered.map(([name,id,address,image,online]) => <article key={id}><span className="mobile-device-image"><img src={image} alt=""/></span><div><strong>{name}</strong><small>{id}</small><em>{address}</em></div><b className={online ? "online" : "offline"}><i/>{online ? "Online" : "Offline"}</b><button type="button" aria-label={`More options for ${name}`}><MoreVertical size={17}/></button></article>)}</div>
+    <button type="button" className="mobile-view-all">View All {tab === "cameras" ? "Cameras" : "Devices"} <ChevronDown size={16}/></button>
+  </section>;
 }

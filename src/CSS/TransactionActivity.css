@@ -1080,3 +1080,26 @@
     justify-self: center;
   }
 }
+@media (max-width: 760px) {
+  .txn-stat-grid {
+    display: flex;
+    width: 100%;
+    gap: 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .txn-stat-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .txn-stat-card {
+    min-width: 185px;
+    min-height: 112px;
+    flex: 0 0 185px;
+    padding: 14px;
+    scroll-snap-align: start;
+  }
+}

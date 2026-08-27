@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   BadgeDollarSign,
   BarChart3,
@@ -17,9 +18,16 @@ import {
   Eye,
   Store,
   Video,
+  MapPin,
+  SlidersHorizontal,
   ChevronRight,
 } from "lucide-react";
 
+import activityVideo01 from "../assets/A-7_cashierSuspicious_20260421_tv4.mp4";
+import activityVideo02 from "../assets/A-7_cashierSuspicious_20260426_p5j.mp4";
+import activityVideo03 from "../assets/A-7_cashierSuspicious_20260429_lhh.mp4";
+import activityVideo04 from "../assets/A-7_cashierSuspicious_20260430_38p.mp4";
+import activityVideo05 from "../assets/A-7_cashierSuspicious_20260520_d3v.mp4";
 import "../CSS/ClientMonitoringDashboard.css";
 
 const demoVideo =
@@ -30,25 +38,97 @@ const videoEvidence = [
     title: "Prevention Activity",
     date: "Jul 31, 2025",
     time: "1:45 PM",
-    videoUrl: demoVideo,
+    videoUrl: activityVideo01,
   },
   {
     title: "Cashier Activity",
     date: "Jul 31, 2025",
     time: "2:00 PM",
-    videoUrl: demoVideo,
+    videoUrl: activityVideo02,
   },
   {
     title: "Opening & Closing",
     date: "Jul 31, 2025",
     time: "10:08 PM",
-    videoUrl: demoVideo,
+    videoUrl: activityVideo03,
   },
+];
+
+const mobileActivityVideos = [
+  { id: "register-transaction", title: "Suspect Attempted Theft", status: "Theft Prevented", theme: "green", location: "Downtown Market", camera: "Camera 03", time: "Today, 09:35 AM", duration: "02:45", source: activityVideo01 },
+  { id: "cash-handling", title: "Cash Theft Reported", status: "Theft Reported", theme: "red", location: "Downtown Market", camera: "Camera 01", time: "Today, 08:12 AM", duration: "01:32", source: activityVideo02 },
+  { id: "customer-interaction", title: "Employee Policy Violation", status: "Incident Report", theme: "orange", location: "Downtown Market", camera: "Camera 05", time: "Yesterday, 11:47 PM", duration: "03:18", source: activityVideo03 },
+  { id: "register-payment", title: "Vehicle Break-in Prevented", status: "Theft Prevented", theme: "blue", location: "Downtown Market", camera: "Camera 12", time: "Yesterday, 10:15 PM", duration: "02:05", source: activityVideo04 },
+  { id: "end-shift", title: "Shoplifting Reported", status: "Theft Reported", theme: "red", location: "Downtown Market", camera: "Camera 02", time: "Yesterday, 09:02 PM", duration: "01:41", source: activityVideo05 },
 ];
 
 export default function ClientMonitoringDashboard() {
   return (
     <main className="client-dashboard">
+      <section className="mobile-dashboard-content">
+        <article className="mobile-savings-hero">
+          <span>Estimated Loss Prevented</span>
+          <strong>$2,450</strong>
+          <p>This Month</p>
+          <Link to="/savings-overview">View Savings Details <ChevronRight size={16} /></Link>
+          <BadgeDollarSign className="mobile-savings-art" size={126} />
+        </article>
+
+        <section className="mobile-monitor-section">
+          <div className="mobile-section-heading">
+            <h2>Monitoring Status</h2>
+            <span>All Good <i /></span>
+          </div>
+          <div className="mobile-monitor-grid">
+            <MobileMonitorItem icon={Store} title="Store Monitored" value="Today" />
+            <MobileMonitorItem icon={Clock3} title="Monitoring Active" value="During Hours" />
+            <MobileMonitorItem icon={Target} title="Last Activity" value="2h ago" />
+            <MobileMonitorItem icon={ShieldCheck} title="System Health" value="Good" />
+          </div>
+        </section>
+
+        <article className="mobile-prevention-card">
+          <div className="mobile-prevention-header">
+            <span><ShieldCheck size={22} /></span>
+            <div><h2>Prevention Highlights</h2><p>You're preventing losses and keeping your store safe.</p></div>
+            <Link to="/prevention-highlights">View Highlights <ChevronRight size={15} /></Link>
+          </div>
+          <div className="mobile-prevention-stats">
+            <MobilePreventionStat icon={Target} value="18" label="Incidents Prevented" />
+            <MobilePreventionStat icon={Users} value="24" label="People Identified" />
+            <MobilePreventionStat icon={BarChart3} value="$3,210" label="Potential Loss Prevented" />
+          </div>
+        </article>
+
+        <section className="mobile-quick-section">
+          <div className="mobile-section-heading"><h2>Quick Actions</h2><span>View All</span></div>
+          <div className="mobile-quick-grid">
+            <MobileQuickAction to="/live-view" icon={Eye} label="Live View" theme="purple" />
+            <MobileQuickAction to="/video-evidence" icon={Play} label="View Recordings" theme="red" />
+            <MobileQuickAction to="/reports" icon={Download} label="Reports" theme="blue" />
+            <MobileQuickAction to="/add-new-store" icon={Store} label="Add New Store" theme="green" />
+            <MobileQuickAction to="/camera-security" icon={ShoppingCart} label="Buy Package" theme="orange" />
+          </div>
+        </section>
+
+        <section className="mobile-activity-section">
+          <div className="mobile-section-heading">
+            <h2>All Activity Videos</h2>
+            <Link to="/cashier-activity-videos">View All</Link>
+          </div>
+          <div className="mobile-activity-filters" aria-label="Video categories">
+            <button className="active" type="button">All Videos</button>
+            <button type="button">Theft Prevented</button>
+            <button type="button">Theft Reported</button>
+            <button type="button">Incident Reports</button>
+            <button className="filter" type="button" aria-label="Filter videos"><SlidersHorizontal size={14} /></button>
+          </div>
+          <div className="mobile-activity-list">
+            {mobileActivityVideos.map((video) => <MobileActivityVideo key={video.id} video={video} />)}
+          </div>
+        </section>
+      </section>
+
       {/* TOP STATS */}
       <section className="client-top-grid">
         <article className="client-stat-card savings-green">
@@ -224,10 +304,10 @@ export default function ClientMonitoringDashboard() {
             </div>
           </div>
 
-          <button className="text-link">
+          <Link className="text-link" to="/cashier-activity">
             View Cashier Activity Videos
             <ChevronRight size={13} />
-          </button>
+          </Link>
         </article>
 
         <article className="client-panel prevention-highlight">
@@ -290,7 +370,7 @@ export default function ClientMonitoringDashboard() {
               <h2>Video Evidence</h2>
             </div>
 
-            <button className="view-all-btn">View All Videos</button>
+            <Link className="view-all-btn" to="/cashier-activity-videos">View All Videos</Link>
           </div>
 
           <div className="video-evidence-grid">
@@ -453,5 +533,54 @@ function CoverageItem({ icon: Icon, title, value, subtitle }) {
         <small>{subtitle}</small>
       </div>
     </div>
+  );
+}
+function MobileMonitorItem({ icon: Icon, title, value }) {
+  return (
+    <div className="mobile-monitor-item">
+      <span><Icon size={19} /></span>
+      <strong>{title}</strong>
+      <small>{value} <CheckCircle2 size={11} /></small>
+    </div>
+  );
+}
+
+function MobilePreventionStat({ icon: Icon, value, label }) {
+  return (
+    <div className="mobile-prevention-stat">
+      <div><span><Icon size={17} /></span><strong>{value}</strong></div>
+      <small>{label}</small>
+      <em>This Month</em>
+    </div>
+  );
+}
+
+function MobileQuickAction({ to, icon: Icon, label, theme }) {
+  return (
+    <Link className="mobile-quick-action" to={to}>
+      <span className={theme}><Icon size={19} /></span>
+      <strong>{label}</strong>
+    </Link>
+  );
+}
+function MobileActivityVideo({ video }) {
+  return (
+    <article className="mobile-activity-video">
+      <Link className="mobile-activity-preview" to={`/cashier-activity-videos/${video.id}`} aria-label={`Play ${video.title}`}>
+        <video src={video.source} preload="metadata" muted playsInline />
+        <span><Play size={14} fill="currentColor" /></span>
+        <small>{video.duration}</small>
+      </Link>
+      <div className="mobile-activity-copy">
+        <em className={video.theme}>{video.status}</em>
+        <strong>{video.title}</strong>
+        <span><MapPin size={10} />{video.location} <b>•</b> {video.camera}</span>
+        <span><Clock3 size={10} />{video.time}</span>
+      </div>
+      <div className="mobile-activity-actions">
+        <Link to={`/cashier-activity-videos/${video.id}`} aria-label={`View ${video.title}`}><Eye size={15} /></Link>
+        <a href={video.source} download aria-label={`Download ${video.title}`}><Download size={15} /></a>
+      </div>
+    </article>
   );
 }

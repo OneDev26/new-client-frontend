@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   BadgeDollarSign,
   ReceiptText,
@@ -269,6 +270,7 @@ const flaggedActivities = [
 ];
 
 export default function TransactionActivity() {
+  const navigate = useNavigate();
   const [cashier, setCashier] = useState("All Cashiers");
   const [register, setRegister] = useState("All Registers");
   const [search, setSearch] = useState("");
@@ -437,7 +439,7 @@ export default function TransactionActivity() {
                       </td>
 
                       <td>
-                        <button className="txn-play-action">
+                        <button className="txn-play-action" onClick={() => navigate("/cashier-activity-videos/register-transaction")}>
                           <Play size={11} fill="currentColor" />
                         </button>
                       </td>
@@ -595,7 +597,7 @@ export default function TransactionActivity() {
                 <div className="txn-clip-item" key={clip.title}>
                   <div className="txn-video-placeholder">
                     {/* Replace with your surveillance thumbnail */}
-                    <button>
+                    <button onClick={() => navigate("/cashier-activity-videos/register-transaction")}>
                       <Play size={15} fill="currentColor" />
                     </button>
 
@@ -617,7 +619,7 @@ export default function TransactionActivity() {
               ))}
             </div>
 
-            <button className="txn-view-all-clips">
+            <button className="txn-view-all-clips" onClick={() => navigate("/cashier-activity-videos")}>
               View All Clips
             </button>
           </article>

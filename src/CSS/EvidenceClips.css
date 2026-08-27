@@ -1169,3 +1169,75 @@
     justify-self: center;
   }
 }
+/* Mobile swipeable evidence KPI cards */
+@media (max-width: 650px) {
+  .ev-stat-grid {
+    display: flex;
+    width: calc(100% + 9px);
+    margin-right: -9px;
+    padding: 1px 9px 9px 1px;
+    gap: 9px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 1px;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ev-stat-grid::-webkit-scrollbar { display: none; }
+  .ev-stat-card {
+    width: min(76vw, 260px);
+    min-width: min(76vw, 260px);
+    min-height: 104px;
+    padding: 14px;
+    border: 1px solid var(--ev-border);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(31, 43, 65, .04);
+    scroll-snap-align: start;
+  }
+  .ev-stat-card:last-child { border-right: 1px solid var(--ev-border); }
+}
+@media (max-width: 650px) {
+  .evidence-page {
+    width: 100%;
+    min-width: 0;
+    padding: 9px 0 86px;
+    overflow-x: hidden;
+  }
+
+  .ev-stat-grid {
+    width: 100%;
+    max-width: 100%;
+    margin-right: 0;
+    padding: 1px 1px 9px;
+  }
+
+  .ev-filter-bar,
+  .ev-main-grid,
+  .ev-left-column,
+  .ev-clips-card,
+  .ev-clip-grid,
+  .ev-clip-card {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .ev-card-top {
+    gap: 10px;
+  }
+
+  .ev-view-controls {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ev-sort {
+    min-width: 0;
+  }
+}

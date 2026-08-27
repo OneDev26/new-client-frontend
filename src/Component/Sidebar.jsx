@@ -4,31 +4,37 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   LayoutDashboard, Clock3, Star, CircleUserRound, Video, ClipboardList,
   ShieldCheck, UsersRound, UserRound, CircleHelp, Headphones,
-  Store, ChevronDown, X
+  Store, Wrench, Settings, Camera, Package, ChevronDown, X
 } from "lucide-react";
 import { fetchStoresThunk } from "../features/stores/storeThunks";
 import survillLogo from "../assets/Survill_logo.png";
 
 const primaryItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
+  { icon: Store, label: "My Stores", path: "/my-stores" },
+  { icon: Camera, label: "Live View", path: "/live-view" },
   { icon: Clock3, label: "Monitoring Status", path: "/monitoring-status" },
   { icon: Star, label: "Prevention Highlights", path: "/prevention-highlights" },
-  { icon: CircleUserRound, label: "Cashier Activity", path: "/cashier-activity" },
+  { icon: CircleUserRound, label: "Cashier Activity", path: "/cashier-activity", activePrefix: "/cashier-activity-videos" },
   { icon: Video, label: "Video Evidence", path: "/video-evidence" },
   { icon: ClipboardList, label: "Reports", path: "/reports", activePath: "/reports" },
   { icon: ShieldCheck, label: "Camera & Security", path: "/camera-security" },
-  { icon: UsersRound, label: "Refer & Earn", path: "/refer-earn" },
+  { icon: Store, label: "Add New Store", path: "/add-new-store" },
+  { icon: Wrench, label: "Installation Progress", path: "/installation-progress" },
+  { icon: Package, label: "Packages & Billing", path: "/packages-billing" },
 ];
 
 const secondaryItems = [
   { icon: UserRound, label: "Account", path: "/account" },
+  { icon: Settings, label: "Settings", path: "/settings" },
+  { icon: UsersRound, label: "Refer & Earn", path: "/refer-earn" },
   { icon: CircleHelp, label: "Help & Support", path: "/help-support" },
 ];
 
 const SidebarLink = ({ item, onClose }) => {
   const location = useLocation();
   const Icon = item.icon;
-  const isActive = location.pathname === (item.activePath || item.path);
+  const isActive = location.pathname === (item.activePath || item.path) || (item.activePrefix && location.pathname.startsWith(item.activePrefix));
   return (
     <NavLink to={item.path} onClick={onClose} className={`sidebar-link ${isActive ? "active" : ""}`}>
       <Icon size={20} strokeWidth={1.8} /><span>{item.label}</span>

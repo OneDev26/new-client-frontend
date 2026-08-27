@@ -1,0 +1,85 @@
+.portal-login{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(430px,.82fr);width:100%;min-height:100dvh;color:#151d39;background:#f8f9fd;font-family:"Geist","Segoe UI",Arial,sans-serif}.portal-login *{box-sizing:border-box}.portal-login button,.portal-login input{font:inherit}.login-visual{position:relative;min-height:100dvh;overflow:hidden;background:#080a23}.login-visual>img{width:100%;height:100%;object-fit:cover}.login-visual::after{position:absolute;inset:0;content:"";background:linear-gradient(90deg,rgba(5,7,28,.35),transparent 55%)}.login-brand{position:absolute;z-index:2;top:64px;left:7%;display:flex;align-items:center;gap:16px;color:#fff}.login-brand>svg{width:58px;height:58px;color:#7658ff;filter:drop-shadow(0 4px 12px #5e42e880)}.login-brand strong,.login-brand span{display:block}.login-brand strong{font-size:34px}.login-brand span{margin-top:7px;color:#b9b6ee;font-size:16px;line-height:1.25}.login-panel{display:flex;align-items:center;justify-content:center;padding:42px;background:#fff}.login-card{width:min(460px,100%)}.login-card header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:30px}.login-card h1{margin:0;font-size:30px}.login-card header p{margin:8px 0 0;color:#758096;font-size:14px}.language{display:flex;height:38px;align-items:center;gap:7px;padding:0 10px;border:1px solid #dfe4ed;border-radius:7px;color:#253149;background:#fff;font-size:12px}.language svg{width:16px}.login-card form{display:flex;flex-direction:column;gap:15px}.login-field{display:grid;grid-template-columns:24px 1fr auto;height:52px;align-items:center;gap:8px;padding:0 14px;border:1px solid #dfe4ed;border-radius:7px;color:#7b869a;background:#fff}.login-field:focus-within{border-color:#8b77f0;box-shadow:0 0 0 3px #5a3ce710}.login-field>svg,.login-field button svg{width:18px}.login-field input{min-width:0;height:100%;border:0;outline:0;color:#263149;background:transparent;font-size:13px}.login-field button{display:grid;width:32px;height:100%;place-items:center;padding:0;border:0;color:#7b869a;background:transparent}.login-options{display:flex;align-items:center;justify-content:space-between;margin:1px 0 4px}.login-options label{display:flex;align-items:center;gap:8px;font-size:12px}.login-options input{width:15px;height:15px;accent-color:#5839e8}.login-options button{padding:0;border:0;color:#5438e7;background:transparent;font-size:12px}.login-submit{display:flex;height:48px;align-items:center;justify-content:center;gap:12px;border:0;border-radius:7px;color:#fff;background:linear-gradient(135deg,#6846f5,#4924e7);box-shadow:0 8px 20px #5438e72a;font-size:14px;font-weight:600}.login-submit svg{width:17px}.login-submit:disabled{opacity:.65}.login-error{margin:0;padding:9px;border-radius:6px;color:#c92f43;background:#fff0f2;font-size:11px;text-align:center}.login-divider{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin:22px 0;color:#6e7a90;font-size:11px}.login-divider span{height:1px;background:#e2e6ed}.social-login{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.social-login button{display:flex;height:43px;align-items:center;justify-content:center;gap:8px;border:1px solid #dfe4ed;border-radius:7px;color:#344158;background:#fff;font-size:11px;font-weight:600}.social-login b{display:grid;width:17px;height:17px;place-items:center}.google{color:#4285f4}.apple{color:#080b12;font-size:16px}.microsoft{grid-template-columns:1fr 1fr;gap:1px}.microsoft i{width:7px;height:7px;background:#f35325}.microsoft i:nth-child(2){background:#81bc06}.microsoft i:nth-child(3){background:#05a6f0}.microsoft i:nth-child(4){background:#ffba08}.login-signup{margin:24px 0 0;color:#6e7a90;font-size:12px;text-align:center}.login-signup button{padding:0;border:0;color:#5438e7;background:transparent;font-weight:600}.login-secure{display:flex;align-items:center;justify-content:center;gap:6px;margin:28px 0 0;color:#7d8799;font-size:10px}.login-secure svg{width:14px;color:#5b3ee6}
+@media(max-width:768px){.portal-login{display:block;min-height:100dvh;background:#080a28}.login-visual{height:43dvh;min-height:310px}.login-visual>img{object-position:center}.login-brand{top:72px;left:9%}.login-brand>svg{width:48px;height:48px}.login-brand strong{font-size:30px}.login-brand span{font-size:15px}.login-panel{position:relative;z-index:3;width:calc(100% - 16px);min-height:57dvh;margin:-18px 8px 0;padding:0;border-radius:24px 24px 0 0;background:#fff}.login-card{padding:22px 26px 20px}.login-card header{margin-bottom:21px}.login-card h1{font-size:20px}.login-card header p{font-size:11px}.language{height:34px;font-size:10px}.login-card form{gap:13px}.login-field{height:44px;padding:0 12px}.login-field input{font-size:10px}.login-options label,.login-options button{font-size:9px}.login-submit{height:43px;font-size:12px}.login-divider{margin:17px 0}.social-login{gap:8px}.social-login button{height:40px;font-size:9px}.login-signup{margin-top:20px;font-size:10px}.login-secure{margin-top:24px;font-size:8px}}
+@media(max-width:390px){.login-card{padding-inline:18px}.login-brand{top:55px}.social-login button{gap:5px}}
+
+.login-visual > picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.login-visual > picture > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.login-visual > picture + .login-brand {
+  display: none;
+}
+@media (max-width: 768px) {
+  .login-visual > picture > img {
+    object-position: center top;
+  }
+}
+/* Desktop login uses a full-viewport image with a centered form card. */
+@media (min-width: 769px) {
+  .portal-login {
+    position: relative;
+    display: block;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #080a23;
+  }
+  .login-visual {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+  }
+  .login-visual::after {
+    background: rgba(4, 6, 24, .16);
+  }
+  .login-visual > picture > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .login-panel {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    background: transparent;
+  }
+  .login-card {
+    width: min(470px, 100%);
+    padding: 34px 36px 30px;
+    border: 1px solid rgba(255,255,255,.75);
+    border-radius: 10px;
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 24px 70px rgba(4,7,25,.34);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+.social-login .social-brand-logo {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  object-fit: contain;
+}
+@media (max-width: 768px) {
+  .social-login .social-brand-logo {
+    width: 16px;
+    height: 16px;
+    flex-basis: 16px;
+  }
+}

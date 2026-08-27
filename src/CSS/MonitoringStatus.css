@@ -860,3 +860,52 @@
     grid-template-columns: 1fr;
   }
 }
+@media (max-width: 600px) {
+  .ms-top-status-grid {
+    display: flex;
+    width: 100%;
+    gap: 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .ms-top-status-grid::-webkit-scrollbar,
+  .ms-system-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ms-top-status-card,
+  .ms-top-status-card:nth-child(2),
+  .ms-top-status-card:nth-child(-n + 2) {
+    min-width: 220px;
+    min-height: 112px;
+    flex: 0 0 220px;
+    padding: 14px 16px;
+    border-right: 1px solid #edf0f4;
+    border-bottom: 0;
+    scroll-snap-align: start;
+  }
+
+  .ms-top-status-card:last-child {
+    border-right: 0;
+  }
+
+  .ms-system-grid {
+    display: flex;
+    width: 100%;
+    gap: 9px;
+    overflow-x: auto;
+    padding: 0 12px 14px;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .ms-system-card {
+    min-width: 155px;
+    flex: 0 0 155px;
+    scroll-snap-align: start;
+  }
+}

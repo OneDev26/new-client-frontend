@@ -14,6 +14,28 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    frontendLogin(state, action) {
+      const { remember } = action.payload;
+      const demoUser = {
+        first_name: 'Client',
+        last_name: 'User',
+        email: 'client@test.com',
+      };
+
+      state.user = demoUser;
+      state.token = 'frontend-demo-token';
+      state.refreshToken = null;
+      state.error = null;
+
+      if (remember) {
+        localStorage.setItem('accessToken', 'frontend-demo-token');
+        localStorage.setItem('user', JSON.stringify(demoUser));
+      } else {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('user');
+      }
+    },
     logout(state) {
       state.user = null;
       state.token = null;
@@ -42,5 +64,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { frontendLogin, logout } = authSlice.actions;
 export default authSlice.reducer;

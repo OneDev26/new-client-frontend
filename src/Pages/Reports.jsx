@@ -13,14 +13,45 @@ import {
   FileText,
   Filter,
   MoreHorizontal,
+  BellRing,
+  LockKeyhole,
   Plus,
   Search,
   ShieldCheck,
   Trash2,
+  Users,
 } from "lucide-react";
 
 import "../CSS/Reports.css";
 
+
+const mobileOverview = [
+  { title: "Incidents Prevented", value: "24", change: "20%", period: "vs Apr 1 - Apr 30", icon: ShieldCheck, theme: "purple" },
+  { title: "Est. Loss Prevented", value: "$2,450", change: "18%", period: "vs Apr 1 - Apr 30", icon: BarChart3, theme: "purple" },
+  { title: "Repeat Offenders", value: "15", change: "7%", period: "vs Apr 1 - Apr 30", icon: Users, theme: "purple" },
+  { title: "Resolution Rate", value: "98%", change: "5%", period: "vs Apr 1 - Apr 30", icon: CheckCircle2, theme: "purple" },
+];
+
+const mobileReportGroups = [
+  {
+    title: "Reports",
+    items: [
+      { title: "Theft Prevention", subtitle: "Track and analyze theft incidents prevented", icon: ShieldCheck, theme: "purple" },
+      { title: "Access Control", subtitle: "Monitor access events and unauthorized attempts", icon: LockKeyhole, theme: "green", metric: "12", metricLabel: "Events" },
+      { title: "Alarm Activity", subtitle: "View alarm triggers and responses", icon: BellRing, theme: "red", metric: "18", metricLabel: "Alerts" },
+      { title: "Policy Compliance", subtitle: "Check store security policy compliance", icon: FileText, theme: "blue", metric: "92%", metricLabel: "Compliance Score" },
+    ],
+  },
+  {
+    title: "Operational Reports",
+    items: [
+      { title: "Foot Traffic", subtitle: "Analyze customer foot traffic patterns", icon: Users, theme: "orange", metric: "1,248", metricLabel: "Total Visits" },
+      { title: "Cashier Activity", subtitle: "Review cashier transactions and activity", icon: BarChart3, theme: "green", metric: "398", metricLabel: "Transactions" },
+    ],
+  },
+];
+
+const mobileCategories = ["All", "Security", "Operations", "Compliance"];
 const summaryCards = [
   {
     title: "Reports Generated",
@@ -210,6 +241,7 @@ export default function Reports() {
   const [store, setStore] = useState("All Stores");
   const [search, setSearch] = useState("");
   const [insightRange, setInsightRange] = useState("This Week");
+  const [mobileCategory, setMobileCategory] = useState("All");
 
   const filteredReports = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -232,6 +264,63 @@ export default function Reports() {
 
   return (
     <main className="reports-page">
+      <section className="reports-mobile-view">
+        <button type="button" className="reports-mobile-date">
+          <CalendarDays size={17} />
+          <span>May 1 - May 31, 2024</span>
+          <ChevronDown size={15} />
+        </button>
+
+        <div className="reports-mobile-tabs" role="tablist" aria-label="Report category">
+          {mobileCategories.map((category) => (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={mobileCategory === category}
+              className={mobileCategory === category ? "active" : ""}
+              onClick={() => setMobileCategory(category)}
+              key={category}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        <section className="reports-mobile-overview">
+          <h2>Overview</h2>
+          <div>
+            {mobileOverview.map(({ title, value, change, period, icon: Icon, theme }) => (
+              <article key={title}>
+                <span className={theme}><Icon size={19} /></span>
+                <strong>{value}</strong>
+                <p>{title}</p>
+                <em>↑ {change}</em>
+                <small>{period}</small>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {mobileReportGroups.map((group) => (
+          <section className="reports-mobile-group" key={group.title}>
+            <div className="reports-mobile-group-heading">
+              <h2>{group.title}</h2>
+              {group.title === "Reports" && <button type="button">View All</button>}
+            </div>
+            <div className="reports-mobile-list">
+              {group.items.map(({ title, subtitle, icon: Icon, theme, metric, metricLabel }, index) => (
+                <button type="button" className={index === 0 && group.title === "Reports" ? "featured" : ""} key={title}>
+                  <span className={theme}><Icon size={19} /></span>
+                  <div><strong>{title}</strong><small>{subtitle}</small></div>
+                  {metric && <div className="reports-mobile-metric"><strong>{metric}</strong><small>{metricLabel}</small></div>}
+                  <ChevronRight size={17} />
+                </button>
+              ))}
+            </div>
+          </section>
+        ))}
+      </section>
+
       <div className="reports-page-actions" aria-label="Report actions">
         <button className="schedule-report-btn">
           <Clock3 size={16} />
