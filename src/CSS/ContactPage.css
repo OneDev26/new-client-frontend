@@ -1,0 +1,943 @@
+/* ==================================================
+   SURVILL — HELP & SUPPORT
+   ================================================== */
+
+.support-page {
+  --support-primary: #5438e7;
+  --support-text: #172138;
+  --support-muted: #6f7b90;
+  --support-border: #e2e7ef;
+
+  width: 100%;
+
+  padding-bottom: 30px;
+
+  color: var(--support-text);
+
+  font-family: var(--portal-font-family);
+}
+
+
+/* ==================================================
+   TOP SUPPORT HERO
+   ================================================== */
+
+.support-hero {
+  display: grid;
+
+  grid-template-columns:
+    minmax(320px, 1.2fr)
+    minmax(520px, 1.8fr);
+
+  align-items: center;
+
+  gap: 22px;
+
+  min-height: 132px;
+
+  margin-bottom: 18px;
+
+  padding: 18px 20px;
+
+  border: 1px solid var(--support-border);
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8f9ff,
+      #ffffff
+    );
+
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, .025),
+    0 5px 14px rgba(15, 23, 42, .045);
+}
+
+
+.support-hero-copy {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+
+.support-hero-icon {
+  display: grid;
+
+  width: 52px;
+  height: 52px;
+
+  flex: 0 0 52px;
+
+  place-items: center;
+
+  border-radius: 13px;
+
+  color: #5438e7;
+
+  background: #eeeaff;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(84,56,231,.03);
+}
+
+
+.support-hero-copy h2 {
+  margin: 0;
+
+  color: #172238;
+
+  font-size: 18px;
+  line-height: 1.25;
+
+  font-weight: 700;
+
+  letter-spacing: -.2px;
+}
+
+
+.support-hero-copy p {
+  max-width: 470px;
+
+  margin: 7px 0 0;
+
+  color: #6c788e;
+
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+
+
+/* HERO STATS */
+
+.support-hero-stats {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+
+.support-stat {
+  display: grid;
+
+  grid-template-columns:
+    38px
+    minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 9px;
+
+  min-height: 70px;
+
+  padding: 10px 11px;
+
+  border: 1px solid #e7eaf1;
+  border-radius: 8px;
+
+  background: #fff;
+}
+
+
+.support-stat > span {
+  display: grid;
+
+  width: 36px;
+  height: 36px;
+
+  place-items: center;
+
+  border-radius: 9px;
+
+  color: #5438e7;
+
+  background: #f0ecff;
+}
+
+
+.support-stat strong,
+.support-stat small {
+  display: block;
+}
+
+
+.support-stat strong {
+  color: #2b374d;
+
+  font-size: 11.5px;
+  line-height: 1.3;
+
+  font-weight: 650;
+}
+
+
+.support-stat small {
+  margin-top: 4px;
+
+  color: #748096;
+
+  font-size: 9.5px;
+  line-height: 1.35;
+}
+
+
+
+/* ==================================================
+   MAIN LAYOUT
+   ================================================== */
+
+.support-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, .95fr)
+    minmax(430px, 1.2fr);
+
+  gap: 18px;
+
+  align-items: start;
+}
+
+
+.support-left {
+  display: flex;
+
+  min-width: 0;
+
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+
+
+/* ==================================================
+   CARD SYSTEM
+   ================================================== */
+
+.support-card {
+  border: 1px solid var(--support-border);
+
+  border-radius: 11px;
+
+  background: #fff;
+
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, .025),
+    0 5px 14px rgba(15, 23, 42, .045);
+
+  transition:
+    border-color .16s ease,
+    box-shadow .16s ease;
+}
+
+
+.support-card-header {
+  padding: 16px 17px;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+
+.support-card-header h2 {
+  margin: 0;
+
+  color: #172238;
+
+  font-size: 15px;
+  line-height: 1.25;
+
+  font-weight: 700;
+
+  letter-spacing: -.1px;
+}
+
+
+.support-card-header p {
+  margin: 5px 0 0;
+
+  color: #748096;
+
+  font-size: 10.5px;
+  line-height: 1.4;
+}
+
+
+
+/* ==================================================
+   CONTACT INFORMATION
+   ================================================== */
+
+.support-contact-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 0;
+
+  padding: 4px 16px 16px;
+}
+
+
+.support-contact-item {
+  display: grid;
+
+  grid-template-columns:
+    42px
+    minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 11px;
+
+  min-height: 92px;
+
+  padding: 12px;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+
+.support-contact-item:nth-child(odd) {
+  border-right: 1px solid #edf0f4;
+}
+
+
+.support-contact-item:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+
+.support-contact-icon {
+  display: grid;
+
+  width: 40px;
+  height: 40px;
+
+  place-items: center;
+
+  border-radius: 10px;
+}
+
+
+.support-contact-icon.purple {
+  color: #583ce5;
+  background: #eeeaff;
+}
+
+
+.support-contact-icon.blue {
+  color: #356df3;
+  background: #eaf1ff;
+}
+
+
+.support-contact-icon.green {
+  color: #0a985b;
+  background: #e7f8ef;
+}
+
+
+.support-contact-icon.orange {
+  color: #db8318;
+  background: #fff1df;
+}
+
+
+.support-contact-item strong,
+.support-contact-item small {
+  display: block;
+}
+
+
+.support-contact-item strong {
+  color: #28354b;
+
+  font-size: 12px;
+  line-height: 1.3;
+
+  font-weight: 650;
+}
+
+
+.support-contact-item small {
+  margin-top: 4px;
+
+  color: #718096;
+
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+
+
+/* ==================================================
+   URGENT ASSISTANCE
+   ================================================== */
+
+.support-assistance-card {
+  display: grid;
+
+  grid-template-columns:
+    42px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 14px 16px;
+
+  border-color: #ded8f7;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf8ff,
+      #f5f2ff
+    );
+}
+
+
+.support-assistance-card > span {
+  display: grid;
+
+  width: 40px;
+  height: 40px;
+
+  place-items: center;
+
+  border-radius: 10px;
+
+  color: #5438e7;
+
+  background: #eeeaff;
+}
+
+
+.support-assistance-card h3 {
+  margin: 0;
+
+  color: #27344a;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+.support-assistance-card p {
+  margin: 4px 0 0;
+
+  color: #6e7a90;
+
+  font-size: 9.8px;
+  line-height: 1.4;
+}
+
+
+.support-assistance-card a {
+  display: flex;
+
+  height: 34px;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 0 11px;
+
+  border: 1px solid #c5b9f3;
+  border-radius: 6px;
+
+  color: #5438e7;
+
+  background: #fff;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  text-decoration: none;
+}
+
+
+
+/* ==================================================
+   SUPPORT FORM
+   ================================================== */
+
+.support-form-card {
+  overflow: hidden;
+}
+
+
+.support-form {
+  padding: 17px;
+}
+
+
+.support-form-row {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 13px;
+}
+
+
+.support-field {
+  display: flex;
+
+  min-width: 0;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  margin-bottom: 13px;
+}
+
+
+.support-field > span {
+  color: #354159;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+.support-field > span b {
+  margin-left: 2px;
+
+  color: #e33f55;
+}
+
+
+.support-field input,
+.support-field textarea {
+  width: 100%;
+
+  border: 1px solid #dce3ec;
+
+  border-radius: 7px;
+
+  color: #354159;
+
+  background: #fff;
+
+  outline: none;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  transition:
+    border-color .15s ease,
+    box-shadow .15s ease;
+}
+
+
+.support-field input {
+  height: 40px;
+
+  padding: 0 11px;
+}
+
+
+.support-field textarea {
+  min-height: 120px;
+
+  padding: 10px 11px;
+
+  resize: vertical;
+
+  line-height: 1.45;
+}
+
+
+.support-field input::placeholder,
+.support-field textarea::placeholder {
+  color: #98a2b3;
+}
+
+
+.support-field input:focus,
+.support-field textarea:focus {
+  border-color: #a99aec;
+
+  box-shadow:
+    0 0 0 3px rgba(83,56,231,.06);
+}
+
+
+
+/* FORM NOTE */
+
+.support-form-note {
+  display: flex;
+
+  min-height: 42px;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 9px 11px;
+
+  border: 1px solid #dfd9f9;
+  border-radius: 7px;
+
+  color: #59667c;
+
+  background: #faf8ff;
+
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+
+.support-form-note svg {
+  flex: 0 0 auto;
+
+  color: #5438e7;
+}
+
+
+
+/* FORM ACTIONS */
+
+.support-form-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 9px;
+
+  margin-top: 16px;
+}
+
+
+.support-cancel-btn,
+.support-submit-btn {
+  height: 36px;
+
+  border-radius: 6px;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  transition:
+    transform .15s ease,
+    border-color .15s ease,
+    background .15s ease,
+    box-shadow .15s ease;
+}
+
+
+.support-cancel-btn {
+  min-width: 72px;
+
+  border: 1px solid #d7dde7;
+
+  color: #455268;
+
+  background: #fff;
+}
+
+
+.support-submit-btn {
+  display: inline-flex;
+
+  min-width: 132px;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border: 0;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5f40ef,
+      #4521e5
+    );
+
+  box-shadow:
+    0 3px 8px rgba(83,56,231,.13),
+    0 7px 16px rgba(83,56,231,.10);
+}
+
+
+
+/* ==================================================
+   SUCCESS
+   ================================================== */
+
+.support-success {
+  display: flex;
+
+  min-height: 390px;
+
+  align-items: center;
+
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 30px;
+
+  text-align: center;
+}
+
+
+.support-success > span {
+  display: grid;
+
+  width: 66px;
+  height: 66px;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  color: #0a9a5c;
+
+  background: #e5f7ed;
+}
+
+
+.support-success h3 {
+  margin: 16px 0 0;
+
+  color: #263149;
+
+  font-size: 17px;
+
+  font-weight: 700;
+}
+
+
+.support-success p {
+  max-width: 390px;
+
+  margin: 8px 0 20px;
+
+  color: #6c788e;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+.support-success button {
+  height: 36px;
+
+  padding: 0 14px;
+
+  border: 1px solid #c6bcf3;
+
+  border-radius: 6px;
+
+  color: #5438e7;
+
+  background: #fff;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+
+/* ==================================================
+   DESKTOP HOVERS
+   ================================================== */
+
+@media (hover:hover) {
+
+  .support-card:hover,
+  .support-hero:hover {
+    border-color: #d8e0eb;
+
+    box-shadow:
+      0 2px 4px rgba(15,23,42,.035),
+      0 9px 22px rgba(15,23,42,.06);
+  }
+
+
+  .support-assistance-card a:hover,
+  .support-success button:hover {
+    border-color: #a99aec;
+
+    background: #faf9ff;
+  }
+
+
+  .support-cancel-btn:hover {
+    transform: translateY(-1px);
+
+    border-color: #c3ccd8;
+
+    background: #fafbfc;
+  }
+
+
+  .support-submit-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+      0 5px 10px rgba(83,56,231,.15),
+      0 9px 20px rgba(83,56,231,.12);
+  }
+
+}
+
+
+
+/* ==================================================
+   TABLET
+   ================================================== */
+
+@media (max-width: 1050px) {
+
+  .support-hero {
+    grid-template-columns: 1fr;
+  }
+
+
+  .support-layout {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+
+/* ==================================================
+   MOBILE
+   ================================================== */
+
+@media (max-width: 768px) {
+
+  .support-page {
+    padding-bottom: 86px;
+  }
+
+
+  .support-hero {
+    padding: 14px;
+
+    border-radius: 10px;
+  }
+
+
+  .support-hero-copy {
+    align-items: flex-start;
+  }
+
+
+  .support-hero-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-basis: 44px;
+  }
+
+
+  .support-hero-copy h2 {
+    font-size: 16px;
+  }
+
+
+  .support-hero-copy p {
+    font-size: 10px;
+  }
+
+
+  .support-hero-stats {
+    grid-template-columns: 1fr;
+  }
+
+
+  .support-stat {
+    min-height: 62px;
+  }
+
+
+  .support-contact-list {
+    grid-template-columns: 1fr;
+
+    padding: 4px 12px 12px;
+  }
+
+
+  .support-contact-item,
+  .support-contact-item:nth-child(odd) {
+    border-right: 0;
+    border-bottom: 1px solid #edf0f4;
+  }
+
+
+  .support-contact-item:last-child {
+    border-bottom: 0;
+  }
+
+
+  .support-assistance-card {
+    grid-template-columns:
+      40px
+      minmax(0,1fr);
+  }
+
+
+  .support-assistance-card a {
+    grid-column: 1 / -1;
+  }
+
+
+  .support-form-row {
+    grid-template-columns: 1fr;
+  }
+
+
+  .support-form {
+    padding: 14px;
+  }
+
+
+  .support-field input {
+    height: 38px;
+  }
+
+
+  .support-form-actions {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+  }
+
+
+  .support-cancel-btn,
+  .support-submit-btn {
+    width: 100%;
+  }
+
+}

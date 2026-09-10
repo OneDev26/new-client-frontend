@@ -817,6 +817,651 @@
   filter: brightness(0.97);
 }
 
+/* ==================================================
+   INSTALLATION PROGRESS — DESKTOP UI POLISH
+   ================================================== */
+
+@media (min-width: 769px) {
+
+  /* PAGE RHYTHM */
+
+  .installation-page {
+    padding-bottom: 30px;
+  }
+
+
+  /* TOP PROJECT STRIP */
+
+  .installation-project-strip {
+    min-height: 82px;
+
+    gap: 22px;
+
+    margin-bottom: 18px;
+
+    padding: 12px 14px;
+
+    border: 1px solid #e2e7ef;
+    border-radius: 11px;
+
+    background: #fff;
+
+    box-shadow:
+      0 1px 2px rgba(15,23,42,.025),
+      0 5px 14px rgba(15,23,42,.045);
+  }
+
+  .project-store-image {
+    width: 54px;
+    height: 54px;
+
+    flex: 0 0 54px;
+
+    border-radius: 8px;
+
+    box-shadow:
+      inset 0 0 0 1px rgba(15,23,42,.03);
+  }
+
+  .project-store-title h2 {
+    color: #182238;
+
+    font-size: 14px;
+    line-height: 1.25;
+
+    font-weight: 700;
+  }
+
+  .project-store-title span {
+    height: 22px;
+
+    padding: 0 8px;
+
+    border-radius: 5px;
+
+    font-size: 9.5px;
+    font-weight: 600;
+  }
+
+  .project-store-block p {
+    margin-top: 5px;
+
+    color: #69758a;
+
+    font-size: 10.5px;
+  }
+
+  .project-meta span {
+    color: #7a8598;
+
+    font-size: 9.5px;
+    line-height: 1.2;
+  }
+
+  .project-meta strong {
+    margin-top: 5px;
+
+    color: #354159;
+
+    font-size: 11px;
+    line-height: 1.2;
+
+    font-weight: 650;
+  }
+
+  .view-store-btn {
+    min-width: 102px;
+    height: 34px;
+
+    border-radius: 6px;
+
+    font-size: 10.5px;
+    font-weight: 600;
+
+    box-shadow:
+      0 1px 3px rgba(83,56,232,.025);
+
+    transition:
+      transform .15s ease,
+      border-color .15s ease,
+      background .15s ease,
+      box-shadow .15s ease;
+  }
+
+
+  /* MAIN LAYOUT */
+
+  .installation-layout {
+    grid-template-columns:
+      minmax(0, 2.3fr)
+      minmax(320px, .95fr);
+
+    gap: 18px;
+
+    align-items: start;
+  }
+
+  .installation-sidebar {
+    gap: 16px;
+  }
+
+
+  /* MAIN CARDS */
+
+  .installation-progress-card,
+  .installation-side-card {
+    border: 1px solid #e2e7ef;
+    border-radius: 11px;
+
+    background: #fff;
+
+    box-shadow:
+      0 1px 2px rgba(15,23,42,.025),
+      0 5px 14px rgba(15,23,42,.045);
+
+    transition:
+      border-color .16s ease,
+      box-shadow .16s ease;
+  }
+
+  .installation-progress-card {
+    padding: 17px 15px;
+  }
+
+  .installation-title {
+    margin-bottom: 15px;
+
+    color: #182238;
+
+    font-size: 14px;
+    line-height: 1.25;
+
+    font-weight: 700;
+
+    letter-spacing: -.1px;
+  }
+
+
+  /* TIMELINE */
+
+  .installation-step {
+    grid-template-columns:
+      44px
+      minmax(0,1fr);
+  }
+
+  .installation-step-circle {
+    width: 32px;
+    height: 32px;
+
+    flex: 0 0 32px;
+
+    font-size: 10px;
+
+    box-shadow:
+      0 1px 3px rgba(15,23,42,.04);
+  }
+
+  .installation-step.completed .installation-step-circle {
+    box-shadow:
+      0 3px 8px rgba(83,56,232,.15);
+  }
+
+  .installation-step.current .installation-step-circle {
+    box-shadow:
+      0 0 0 5px rgba(83,56,232,.09),
+      0 4px 10px rgba(83,56,232,.12);
+  }
+
+  .installation-step-line {
+    min-height: 38px;
+  }
+
+
+  /* STEP CARDS */
+
+  .installation-step-content {
+    grid-template-columns:
+      20px
+      minmax(0,1fr)
+      auto;
+
+    min-height: 68px;
+
+    gap: 10px;
+
+    margin-bottom: 8px;
+
+    padding: 10px 12px;
+
+    border: 1px solid #e3e8ef;
+    border-radius: 8px;
+
+    background: #fff;
+
+    box-shadow:
+      0 1px 2px rgba(15,23,42,.015),
+      0 3px 9px rgba(15,23,42,.025);
+
+    transition:
+      border-color .15s ease,
+      background .15s ease,
+      box-shadow .15s ease;
+  }
+
+  .installation-step.current .installation-step-content {
+    border-color: #b3a8ef;
+
+    background:
+      linear-gradient(
+        135deg,
+        #fbfaff,
+        #f5f2ff
+      );
+
+    box-shadow:
+      0 1px 2px rgba(83,56,232,.03),
+      0 6px 16px rgba(83,56,232,.07);
+  }
+
+  .installation-step-number {
+    padding-top: 2px;
+
+    color: #58657a;
+
+    font-size: 10px;
+    font-weight: 650;
+  }
+
+  .installation-step-copy strong {
+    color: #2a374d;
+
+    font-size: 11.5px;
+    line-height: 1.3;
+
+    font-weight: 650;
+  }
+
+  .installation-step-copy small {
+    margin-top: 5px;
+
+    color: #748096;
+
+    font-size: 9.8px;
+    line-height: 1.4;
+  }
+
+
+  /* STATUS */
+
+  .installation-step-status {
+    min-width: 225px;
+
+    gap: 10px;
+  }
+
+  .installation-badge {
+    min-width: 66px;
+    height: 22px;
+
+    padding: 0 7px;
+
+    border-radius: 5px;
+
+    font-size: 9px;
+    font-weight: 600;
+  }
+
+  .installation-date {
+    color: #657187;
+
+    font-size: 9.5px;
+  }
+
+  .installation-step-status > button {
+    min-width: 112px;
+    height: 32px;
+
+    border-radius: 6px;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    box-shadow:
+      0 2px 5px rgba(83,56,232,.10);
+
+    transition:
+      transform .15s ease,
+      box-shadow .15s ease,
+      filter .15s ease;
+  }
+
+
+  /* EMAIL NOTE */
+
+  .installation-email-note {
+    min-height: 44px;
+
+    margin-top: 13px;
+
+    padding: 0 13px;
+
+    border-radius: 7px;
+
+    color: #57647a;
+
+    font-size: 10px;
+    line-height: 1.35;
+
+    box-shadow:
+      inset 0 0 0 1px rgba(83,56,232,.018);
+  }
+
+
+  /* SIDE CARDS */
+
+  .installation-side-card {
+    padding: 16px;
+  }
+
+  .installation-side-heading {
+    margin-bottom: 14px;
+  }
+
+  .installation-side-heading > span {
+    width: 32px;
+    height: 32px;
+
+    flex: 0 0 32px;
+
+    box-shadow:
+      inset 0 0 0 1px rgba(83,56,232,.03);
+  }
+
+  .installation-side-heading h2,
+  .project-summary-card > h2,
+  .installation-help-top h2 {
+    color: #182238;
+
+    font-size: 14px;
+    line-height: 1.25;
+
+    font-weight: 700;
+  }
+
+
+  /* CURRENT STEP */
+
+  .current-step-card h3 {
+    color: #2c394f;
+
+    font-size: 11px;
+    line-height: 1.3;
+
+    font-weight: 650;
+  }
+
+  .current-step-description {
+    margin: 6px 0 14px;
+
+    color: #6c788e;
+
+    font-size: 10px;
+    line-height: 1.45;
+  }
+
+  .installation-field {
+    gap: 7px;
+  }
+
+  .installation-field > span,
+  .installation-upload-label {
+    color: #455269;
+
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .installation-date-field {
+    height: 36px;
+
+    border-radius: 7px;
+
+    transition:
+      border-color .15s ease,
+      box-shadow .15s ease;
+  }
+
+  .installation-date-field:focus-within {
+    border-color: #a99aec;
+
+    box-shadow:
+      0 0 0 3px rgba(83,56,232,.06);
+  }
+
+  .installation-date-field input {
+    padding: 0 34px 0 10px;
+
+    font-size: 10.5px;
+  }
+
+
+  /* DROPZONE */
+
+  .installation-upload-label {
+    margin: 14px 0 8px;
+  }
+
+  .installation-dropzone {
+    min-height: 105px;
+
+    gap: 7px;
+
+    border: 1px dashed #b9c4d6;
+    border-radius: 8px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #fff,
+        #fbfaff
+      );
+
+    transition:
+      border-color .15s ease,
+      background .15s ease,
+      box-shadow .15s ease;
+  }
+
+  .installation-dropzone strong {
+    color: #536078;
+
+    font-size: 10px;
+    font-weight: 550;
+  }
+
+  .installation-dropzone small {
+    color: #8792a5;
+
+    font-size: 9px;
+  }
+
+  .installation-submit-btn {
+    height: 35px;
+
+    margin-top: 13px;
+
+    border-radius: 6px;
+
+    font-size: 10.5px;
+    font-weight: 600;
+
+    box-shadow:
+      0 2px 5px rgba(83,56,232,.10);
+
+    transition:
+      transform .15s ease,
+      box-shadow .15s ease,
+      filter .15s ease;
+  }
+
+  .installation-submit-btn:disabled {
+    box-shadow: none;
+  }
+
+
+  /* HELP CARD */
+
+  .installation-help-card {
+    padding: 15px;
+  }
+
+  .installation-help-top {
+    gap: 11px;
+  }
+
+  .installation-help-top > span {
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    box-shadow:
+      inset 0 0 0 1px rgba(83,56,232,.03);
+  }
+
+  .installation-help-top p {
+    margin-top: 5px;
+
+    color: #6c788e;
+
+    font-size: 9.8px;
+    line-height: 1.45;
+  }
+
+  .installation-help-card > button {
+    height: 32px;
+
+    margin-top: 13px;
+
+    border-radius: 6px;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    transition:
+      transform .15s ease,
+      border-color .15s ease,
+      background .15s ease,
+      box-shadow .15s ease;
+  }
+
+
+  /* PROJECT SUMMARY */
+
+  .project-summary-card {
+    padding: 16px 15px;
+  }
+
+  .project-summary-list {
+    margin-top: 13px;
+  }
+
+  .project-summary-row {
+    min-height: 36px;
+
+    gap: 15px;
+  }
+
+  .project-summary-row span {
+    color: #7a8598;
+
+    font-size: 9.5px;
+  }
+
+  .project-summary-row strong {
+    color: #303c52;
+
+    font-size: 10px;
+    font-weight: 650;
+  }
+
+  .view-requests-btn {
+    height: 32px;
+
+    margin-top: 13px;
+
+    border-radius: 6px;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    transition:
+      transform .15s ease,
+      border-color .15s ease,
+      background .15s ease,
+      box-shadow .15s ease;
+  }
+
+}
+
+
+/* ==================================================
+   DESKTOP HOVERS
+   ================================================== */
+
+@media (hover:hover) and (min-width:769px) {
+
+  .installation-progress-card:hover,
+  .installation-side-card:hover,
+  .installation-project-strip:hover {
+    border-color: #d8e0eb;
+
+    box-shadow:
+      0 2px 4px rgba(15,23,42,.035),
+      0 9px 22px rgba(15,23,42,.06);
+  }
+
+  .installation-step-content:hover {
+    border-color: #d7dfea;
+
+    box-shadow:
+      0 2px 4px rgba(15,23,42,.025),
+      0 6px 14px rgba(15,23,42,.045);
+  }
+
+  .installation-dropzone:hover {
+    border-color: #9f91e9;
+
+    background: #faf9ff;
+
+    box-shadow:
+      0 0 0 3px rgba(83,56,232,.045);
+  }
+
+  .view-store-btn:hover,
+  .installation-help-card > button:hover,
+  .view-requests-btn:hover {
+    transform: translateY(-1px);
+
+    border-color: #9381ea;
+
+    background: #faf9ff;
+
+    box-shadow:
+      0 4px 10px rgba(83,56,232,.07);
+  }
+
+  .installation-step-status > button:hover,
+  .installation-submit-btn:not(:disabled):hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+      0 5px 11px rgba(83,56,232,.13);
+  }
+
+}
+
 /* ===================================================
    RESPONSIVE
 =================================================== */

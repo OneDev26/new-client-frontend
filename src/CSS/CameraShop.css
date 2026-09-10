@@ -959,6 +959,668 @@
   font-size: 5.2px;
 }
 
+/* ==================================================
+   CAMERA SHOP — DESKTOP UI POLISH
+   ================================================== */
+
+@media (min-width: 681px) {
+
+  /* PAGE */
+  .camera-shop-page{
+    padding-bottom:30px;
+  }
+
+  .camera-shop-layout{
+    grid-template-columns:
+      minmax(0,2.5fr)
+      minmax(310px,.95fr);
+
+    gap:18px;
+  }
+
+  .camera-shop-main{
+    gap:16px;
+  }
+
+  .camera-shop-sidebar{
+    gap:16px;
+  }
+
+
+  /* FEATURE CARDS - SEPARATE THEM */
+
+  .camera-feature-strip{
+    display:grid;
+
+    grid-template-columns:repeat(4,minmax(0,1fr));
+
+    gap:12px;
+
+    min-height:auto;
+
+    overflow:visible;
+
+    border:0;
+    border-radius:0;
+
+    background:transparent;
+  }
+
+  .camera-feature-item{
+    min-height:72px;
+
+    gap:11px;
+
+    padding:13px 14px;
+
+    border:1px solid #e2e7ef;
+    border-radius:10px;
+
+    background:#fff;
+
+    box-shadow:
+      0 1px 2px rgba(15,23,42,.02),
+      0 4px 12px rgba(15,23,42,.04);
+  }
+
+  .camera-feature-item:last-child{
+    border-right:1px solid #e2e7ef;
+  }
+
+  .camera-feature-icon{
+    width:38px;
+    height:38px;
+
+    flex:0 0 38px;
+
+    box-shadow:
+      inset 0 0 0 1px rgba(40,99,223,.04);
+  }
+
+  .camera-feature-icon svg{
+    width:18px;
+    height:18px;
+    stroke-width:2;
+  }
+
+  .camera-feature-item strong{
+    font-size:11.5px;
+    line-height:1.25;
+    font-weight:650;
+  }
+
+  .camera-feature-item small{
+    margin-top:4px;
+
+    font-size:10px;
+    line-height:1.25;
+  }
+
+
+  /* CATEGORY CARDS */
+
+  .camera-category-tabs{
+    display:grid;
+
+    grid-template-columns:repeat(5,minmax(0,1fr));
+
+    gap:10px;
+
+    min-height:auto;
+
+    overflow:visible;
+
+    border:0;
+    border-radius:0;
+
+    background:transparent;
+  }
+
+  .camera-category-tabs > button{
+    min-height:58px;
+
+    gap:9px;
+
+    padding:10px 12px;
+
+    border:1px solid #e2e7ef;
+    border-radius:9px;
+
+    color:#3c485f;
+    background:#fff;
+
+    box-shadow:
+      0 1px 2px rgba(15,23,42,.018),
+      0 3px 9px rgba(15,23,42,.03);
+
+    transition:
+      border-color .15s ease,
+      background .15s ease,
+      box-shadow .15s ease;
+  }
+
+  .camera-category-tabs > button:last-child{
+    border-right:1px solid #e2e7ef;
+  }
+
+  .camera-category-tabs > button.active{
+    color:#1f58ce;
+
+    border-color:#9fb6ef;
+
+    background:#f7f9ff;
+
+    box-shadow:
+      0 0 0 2px rgba(86,117,224,.08),
+      0 4px 10px rgba(15,23,42,.035);
+  }
+
+  .camera-category-tabs strong{
+    font-size:11px;
+    font-weight:600;
+  }
+
+  .camera-category-tabs small{
+    margin-top:3px;
+
+    font-size:9.5px;
+  }
+
+
+  /* PRODUCT GRID */
+
+  .camera-product-grid{
+    gap:14px;
+  }
+
+  .camera-product-card{
+    padding:12px 12px 13px;
+
+    border:1px solid #e2e7ef;
+    border-radius:11px;
+
+    background:#fff;
+
+    box-shadow:
+      0 1px 2px rgba(15,23,42,.025),
+      0 5px 14px rgba(15,23,42,.045);
+
+    transition:
+      transform .17s ease,
+      border-color .17s ease,
+      box-shadow .17s ease;
+  }
+
+  .camera-product-image{
+    height:138px;
+
+    margin-bottom:9px;
+  }
+
+  .camera-product-image img{
+    width:90%;
+    height:122px;
+  }
+
+  .camera-product-heading{
+    min-height:28px;
+
+    gap:8px;
+  }
+
+  .camera-product-heading h3{
+    color:#182238;
+
+    font-size:11.5px;
+    line-height:1.25;
+
+    font-weight:700;
+  }
+
+  .camera-product-badge{
+    min-height:20px;
+
+    padding:0 7px;
+
+    border-radius:10px;
+
+    font-size:9px;
+    font-weight:600;
+  }
+
+
+  /* FEATURE LIST INSIDE PRODUCT */
+
+  .camera-feature-list{
+    min-height:84px;
+
+    gap:6px;
+
+    margin:8px 0 11px;
+  }
+
+  .camera-feature-list li{
+    gap:6px;
+
+    color:#4b586e;
+
+    font-size:10px;
+    line-height:1.3;
+  }
+
+  .camera-feature-list li svg{
+    width:12px;
+    height:12px;
+    stroke-width:2;
+  }
+
+
+  /* PRODUCT BUTTONS */
+
+  .camera-card-actions{
+    gap:8px;
+  }
+
+  .camera-details-btn,
+  .camera-select-btn{
+    height:34px;
+
+    border-radius:6px;
+
+    font-size:10.5px;
+    font-weight:600;
+
+    transition:
+      transform .15s ease,
+      border-color .15s ease,
+      background .15s ease,
+      box-shadow .15s ease;
+  }
+
+  .camera-details-btn{
+    border-color:#c8d5e7;
+
+    background:#fff;
+  }
+
+  .camera-select-btn{
+    box-shadow:
+      0 2px 5px rgba(21,85,212,.10);
+  }
+
+
+  /* SERVICE INFO — MAKE IT A REAL CARD */
+
+  .camera-service-info{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:0;
+
+    overflow:hidden;
+
+    border:1px solid #dce9e3;
+    border-radius:11px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #f8fcfa,
+        #fff
+      );
+
+    box-shadow:
+      0 1px 2px rgba(15,23,42,.02),
+      0 5px 14px rgba(15,23,42,.035);
+  }
+
+  .camera-service-info article{
+    min-height:94px;
+
+    gap:14px;
+
+    padding:16px 18px;
+  }
+
+  .service-info-icon{
+    width:44px;
+    height:44px;
+
+    flex:0 0 44px;
+  }
+
+  .camera-service-info h3{
+    color:#22654e;
+
+    font-size:11.5px;
+    line-height:1.25;
+
+    font-weight:650;
+  }
+
+  .camera-service-info p{
+    margin-top:6px;
+
+    color:#667386;
+
+    font-size:10px;
+    line-height:1.45;
+  }
+
+
+  /* EXCLUSIVE OFFER */
+
+  .exclusive-offer-card{
+    padding:18px;
+
+    border-radius:11px;
+
+    box-shadow:
+      0 3px 8px rgba(84,47,203,.10),
+      0 10px 24px rgba(84,47,203,.13);
+  }
+
+  .exclusive-heading > span{
+    width:44px;
+    height:44px;
+
+    flex:0 0 44px;
+  }
+
+  .exclusive-heading h2{
+    font-size:15px;
+    font-weight:700;
+  }
+
+  .exclusive-heading strong{
+    font-size:10.5px;
+    font-weight:500;
+  }
+
+  .exclusive-description{
+    margin:14px 0 15px;
+
+    font-size:10px;
+    line-height:1.55;
+  }
+
+  .membership-box{
+    padding:13px 14px;
+
+    border-radius:8px;
+  }
+
+  .membership-box h3{
+    font-size:11px;
+    font-weight:700;
+  }
+
+  .membership-box li{
+    gap:7px;
+
+    font-size:9.5px;
+    line-height:1.3;
+  }
+
+
+  /* SPECIAL PLANS */
+
+  .camera-side-card{
+    border:1px solid #e2e7ef;
+    border-radius:11px;
+
+    background:#fff;
+
+    box-shadow:
+      0 1px 2px rgba(15,23,42,.025),
+      0 5px 14px rgba(15,23,42,.045);
+  }
+
+  .plans-card{
+    padding:15px 14px 0;
+  }
+
+  .plans-card > h2{
+    margin-bottom:13px;
+
+    color:#182238;
+
+    font-size:11.5px;
+    font-weight:700;
+  }
+
+  .special-plan-list{
+    gap:10px;
+  }
+
+  .special-plan{
+    min-height:82px;
+
+    grid-template-columns:
+      38px
+      minmax(0,1fr)
+      auto;
+
+    gap:10px;
+
+    padding:11px;
+
+    border:1px solid #ddd6f7;
+    border-radius:8px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #fbfaff,
+        #fff
+      );
+
+    transition:
+      border-color .15s ease,
+      background .15s ease,
+      box-shadow .15s ease;
+  }
+
+  .plan-icon{
+    width:36px;
+    height:36px;
+
+    border-radius:8px;
+  }
+
+  .special-plan strong{
+    font-size:10.5px;
+    line-height:1.35;
+    font-weight:650;
+  }
+
+  .special-plan small{
+    margin-top:5px;
+
+    font-size:9px;
+    line-height:1.4;
+  }
+
+  .plan-price{
+    min-height:24px;
+
+    padding:0 8px;
+
+    border-radius:5px;
+
+    font-size:9px;
+    font-weight:600;
+  }
+
+  .termination-note{
+    margin:13px -14px 0;
+
+    padding:13px 14px;
+
+    font-size:9px;
+    line-height:1.45;
+  }
+
+
+  /* READY CARD */
+
+  .ready-card{
+    padding:15px;
+
+    border:1px solid #e1dcf8;
+    border-radius:11px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #fbf9ff,
+        #f3efff
+      );
+
+    box-shadow:
+      0 1px 2px rgba(83,48,217,.02),
+      0 4px 12px rgba(83,48,217,.04);
+  }
+
+  .ready-card h2{
+    font-size:11.5px;
+    font-weight:700;
+  }
+
+  .ready-card p{
+    margin:5px 0 11px;
+
+    font-size:9.5px;
+  }
+
+  .ready-card button{
+    min-width:172px;
+    height:34px;
+
+    border-radius:6px;
+
+    font-size:10.5px;
+    font-weight:600;
+
+    box-shadow:
+      0 2px 5px rgba(83,48,217,.12);
+  }
+
+
+  /* BOTTOM BENEFITS — SEPARATE CARDS */
+
+  .camera-bottom-benefits{
+    display:grid;
+
+    grid-template-columns:repeat(3,minmax(0,1fr));
+
+    gap:12px;
+
+    margin-top:18px;
+
+    border:0;
+
+    background:transparent;
+  }
+
+  .camera-bottom-benefits article{
+    min-height:72px;
+
+    justify-content:center;
+
+    gap:11px;
+
+    padding:12px 14px;
+
+    border:1px solid #e2e7ef;
+    border-radius:10px;
+
+    background:#fff;
+
+    box-shadow:
+      0 1px 2px rgba(15,23,42,.02),
+      0 4px 12px rgba(15,23,42,.035);
+  }
+
+  .camera-bottom-benefits article:last-child{
+    border-right:1px solid #e2e7ef;
+  }
+
+  .camera-bottom-benefits article > span{
+    width:38px;
+    height:38px;
+
+    flex:0 0 38px;
+
+    place-items:center;
+
+    border-radius:50%;
+
+    background:#eef4ff;
+  }
+
+  .camera-bottom-benefits strong{
+    font-size:10.5px;
+    font-weight:650;
+  }
+
+  .camera-bottom-benefits small{
+    margin-top:4px;
+
+    font-size:9px;
+    line-height:1.3;
+  }
+
+}
+
+
+/* HOVERS */
+
+@media (hover:hover) and (min-width:681px){
+
+  .camera-product-card:hover{
+    transform:translateY(-2px);
+
+    border-color:#d3dce8;
+
+    box-shadow:
+      0 2px 4px rgba(15,23,42,.035),
+      0 10px 22px rgba(15,23,42,.07);
+  }
+
+  .camera-category-tabs > button:hover{
+    border-color:#d2dbea;
+
+    background:#fafbfe;
+  }
+
+  .camera-details-btn:hover{
+    transform:translateY(-1px);
+
+    border-color:#adc0dc;
+
+    background:#f7faff;
+  }
+
+  .camera-select-btn:hover{
+    transform:translateY(-1px);
+
+    box-shadow:
+      0 4px 10px rgba(21,85,212,.13);
+  }
+
+  .special-plan:hover{
+    border-color:#cfc4f4;
+
+    background:#faf9ff;
+
+    box-shadow:
+      0 4px 10px rgba(83,56,232,.05);
+  }
+
+}
+
 /* ========================================================
    RESPONSIVE
 ======================================================== */

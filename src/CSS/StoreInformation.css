@@ -564,6 +564,427 @@
   background: #faf9ff;
 }
 
+/* ==================================================
+   ADD NEW STORE — DESKTOP UI POLISH
+   ================================================== */
+
+@media (min-width: 781px) {
+
+  /* MAIN LAYOUT */
+
+  .store-info-layout {
+    grid-template-columns:
+      minmax(0, 2.35fr)
+      minmax(310px, .95fr);
+
+    gap: 18px;
+
+    align-items: start;
+  }
+
+
+  /* MAIN FORM + SIDEBAR CARDS */
+
+  .store-info-main-card,
+  .store-package-summary,
+  .store-help-card {
+    border: 1px solid #e2e7ef;
+    border-radius: 11px;
+
+    background: #fff;
+
+    box-shadow:
+      0 1px 2px rgba(15,23,42,.025),
+      0 5px 14px rgba(15,23,42,.045);
+
+    transition:
+      border-color .16s ease,
+      box-shadow .16s ease;
+  }
+
+  .store-info-main-card {
+    padding: 18px 18px 0;
+  }
+
+  .store-info-sidebar {
+    gap: 16px;
+  }
+
+
+  /* PROGRESS STEPS */
+
+  .store-progress {
+    gap: 15px;
+
+    padding: 0 2px 16px;
+  }
+
+  .store-step {
+    min-width: 155px;
+
+    gap: 10px;
+  }
+
+  .store-step-number {
+    width: 32px;
+    height: 32px;
+
+    flex: 0 0 32px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    box-shadow:
+      inset 0 0 0 1px rgba(15,23,42,.02);
+  }
+
+  .store-step.active .store-step-number {
+    box-shadow:
+      0 4px 11px rgba(84,56,231,.18);
+  }
+
+  .store-step strong {
+    color: #354159;
+
+    font-size: 12px;
+    line-height: 1.25;
+
+    font-weight: 650;
+  }
+
+  .store-step small {
+    margin-top: 4px;
+
+    color: #778298;
+
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  .store-step-line {
+    background: #dfe4eb;
+  }
+
+
+  /* SECTION HEADINGS */
+
+  .store-form-section {
+    padding: 17px 0 16px;
+  }
+
+  .store-section-heading {
+    margin-bottom: 14px;
+  }
+
+  .store-section-heading h2 {
+    color: #172238;
+
+    font-size: 15px;
+    line-height: 1.25;
+
+    font-weight: 700;
+
+    letter-spacing: -.1px;
+  }
+
+  .store-section-heading p {
+    margin-top: 5px;
+
+    color: #6e7a90;
+
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+
+  /* FORM GRIDS */
+
+  .store-form-grid {
+    gap: 12px;
+
+    margin-bottom: 12px;
+  }
+
+
+  /* FIELD LABELS */
+
+  .store-field {
+    gap: 7px;
+  }
+
+  .store-field > span {
+    color: #354159;
+
+    font-size: 11px;
+    line-height: 1.2;
+
+    font-weight: 600;
+  }
+
+
+  /* INPUTS + SELECTS */
+
+  .store-field input,
+  .store-select-wrap,
+  .store-icon-input {
+    height: 38px;
+
+    border: 1px solid #dce3ec;
+    border-radius: 7px;
+
+    background: #fff;
+
+    transition:
+      border-color .15s ease,
+      box-shadow .15s ease,
+      background .15s ease;
+  }
+
+  .store-field input {
+    padding: 0 11px;
+
+    color: #354159;
+
+    font-size: 11px;
+  }
+
+  .store-field input::placeholder {
+    color: #99a3b4;
+  }
+
+  .store-select-wrap select {
+    padding: 0 30px 0 11px;
+
+    color: #455168;
+
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .store-select-wrap svg {
+    right: 10px;
+  }
+
+  .store-icon-input {
+    gap: 8px;
+
+    padding: 0 11px;
+  }
+
+  .store-icon-input input {
+    font-size: 11px;
+  }
+
+  .store-field input:focus,
+  .store-select-wrap:focus-within,
+  .store-icon-input:focus-within {
+    border-color: #a99aec;
+
+    box-shadow:
+      0 0 0 3px rgba(83,56,231,.06);
+  }
+
+
+  /* SAVE BUTTON */
+
+  .store-form-footer {
+    padding: 0 0 16px;
+  }
+
+  .store-save-btn {
+    min-width: 150px;
+    height: 36px;
+
+    gap: 7px;
+
+    padding: 0 14px;
+
+    border-radius: 6px;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    box-shadow:
+      0 3px 8px rgba(83,56,231,.12),
+      0 7px 16px rgba(83,56,231,.10);
+
+    transition:
+      transform .15s ease,
+      box-shadow .15s ease,
+      filter .15s ease;
+  }
+
+
+  /* PACKAGE SUMMARY */
+
+  .store-package-summary {
+    padding: 16px;
+  }
+
+  .store-package-summary h2,
+  .store-help-card h2 {
+    color: #172238;
+
+    font-size: 14px;
+    line-height: 1.25;
+
+    font-weight: 700;
+  }
+
+  .package-summary-desc {
+    margin: 6px 0 12px;
+
+    color: #6c788e;
+
+    font-size: 10.5px;
+    line-height: 1.4;
+  }
+
+
+  /* PACKAGE IMAGE */
+
+  .package-image-slot {
+    height: 138px;
+
+    border-radius: 9px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #fbfaff,
+        #f4f1ff
+      );
+
+    box-shadow:
+      inset 0 0 0 1px rgba(83,56,231,.025);
+  }
+
+  .package-image-slot img {
+    width: 84%;
+    height: 158px;
+
+    object-fit: contain;
+  }
+
+
+  /* PACKAGE FEATURES */
+
+  .package-feature-list {
+    gap: 13px;
+
+    margin-top: 15px;
+  }
+
+  .package-feature {
+    grid-template-columns:
+      32px
+      minmax(0, 1fr);
+
+    gap: 10px;
+  }
+
+  .package-feature > span {
+    width: 31px;
+    height: 31px;
+
+    border-radius: 50%;
+
+    box-shadow:
+      inset 0 0 0 1px rgba(84,56,231,.03);
+  }
+
+  .package-feature strong {
+    color: #303c52;
+
+    font-size: 11px;
+    line-height: 1.25;
+
+    font-weight: 650;
+  }
+
+  .package-feature small {
+    margin-top: 4px;
+
+    color: #748096;
+
+    font-size: 9.5px;
+    line-height: 1.35;
+  }
+
+
+  /* HELP CARD */
+
+  .store-help-card {
+    padding: 17px;
+  }
+
+  .store-help-card p {
+    margin: 8px 0 14px;
+
+    max-width: 250px;
+
+    color: #667389;
+
+    font-size: 10.5px;
+    line-height: 1.5;
+  }
+
+  .store-help-card button {
+    min-width: 132px;
+    height: 34px;
+
+    gap: 7px;
+
+    border-radius: 6px;
+
+    font-size: 10.5px;
+    font-weight: 600;
+
+    transition:
+      transform .15s ease,
+      border-color .15s ease,
+      background .15s ease,
+      box-shadow .15s ease;
+  }
+
+}
+
+
+/* DESKTOP HOVERS */
+
+@media (hover:hover) and (min-width:781px) {
+
+  .store-info-main-card:hover,
+  .store-package-summary:hover,
+  .store-help-card:hover {
+    border-color: #d9e0ea;
+
+    box-shadow:
+      0 2px 4px rgba(15,23,42,.035),
+      0 9px 22px rgba(15,23,42,.06);
+  }
+
+  .store-save-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+      0 5px 10px rgba(83,56,231,.14),
+      0 9px 20px rgba(83,56,231,.12);
+  }
+
+  .store-help-card button:hover {
+    transform: translateY(-1px);
+
+    border-color: #9384e6;
+
+    background: #faf9ff;
+
+    box-shadow:
+      0 4px 10px rgba(83,56,231,.07);
+  }
+
+}
+
 /* =========================
    RESPONSIVE
 ========================= */
@@ -1612,3 +2033,4 @@
   .store-success-safe span { color: #526078; font-size: 12px; line-height: 1.4; }
   .store-success-done { width: 100%; min-height: 48px; margin-top: 18px; font-size: 14px; }
 }
+
